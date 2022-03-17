@@ -1,11 +1,10 @@
 <?php
 require_once 'FPDF/fpdf.php';
 include ("db.php");
-include("mailer.php");
 
 $itemID = mysqli_query($conn, "SELECT * FROM inventoryitem");
 
-if(isset($_POST['btn_pdf'])){
+if(isset($_POST['btn_pdf2'])){
     class PDF extends FPDF{
         // Page header
         function Header()
@@ -46,26 +45,16 @@ if(isset($_POST['btn_pdf'])){
 
     //loop to add data from database
     while ($row = mysqli_fetch_assoc($itemID)){
-        $pdf->Cell(30, 10, $row['itemID'],1, 0, 'C');
-        $pdf->Cell(50, 10, $row['item_name'],1, 0, 'C');
-        $pdf->Cell(30, 10, $row['price'],1, 0, 'C');
-        $pdf->Cell(30, 10, $row['quantity'],1, 0, 'C');
-        //Status
-        if($row['s_status'] == 1){
-            $pdf->Cell(30, 10, 'Available',1, 0, 'C');
+        if ($row['s_status'] == 0){
+            $pdf->Cell(30, 10, $row['itemID'],1, 0, 'C');
+            $pdf->Cell(50, 10, $row['item_name'],1, 0, 'C');
+            $pdf->Cell(30, 10, $row['price'],1, 0, 'C');
+            $pdf->Cell(30, 10, $row['quantity'],1, 0, 'C');
         }
-        else if($row['s_status'] == 0){
-            $pdf->Cell(30, 10, 'Unavailable',1, 0, 'C');
-        }
-        else if($row['s_status'] == 2){
-            $pdf->Cell(30, 10, 'In route',1, 0, 'C');
-        }
-        $pdf->Cell(30, 10, $row['userID'],1, 1, 'C');
     }
-    $filename="weeklyReports/weeklyReport.pdf";
+    $filename="unavailableItemsReports/weeklyReport.pdf";
     $pdf->Output($filename,'F');
 }
-sendStockReport();
 echo '<script>alert("File saved successfully")</script>';
 echo '
         <script>

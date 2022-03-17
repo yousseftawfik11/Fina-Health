@@ -1,3 +1,6 @@
+<?php
+include("db.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,9 +18,8 @@
 
     <!--Font Awesome 4 CDN-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Homepage</title>
 
-    <!---->
+    <!--Google API for Pie Chart with edited query-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
@@ -26,16 +28,17 @@
       function drawChart() {
 
         var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
+          ['Items', 'Quantity'],
+          <?php
+            $items = mysqli_query($conn, "SELECT * FROM inventoryitem WHERE s_status = 1 "); /*Query to only get available items*/
+            while ($result = mysqli_fetch_assoc($items)) {
+                echo "['".$result['item_name']."',".$result['quantity']."],";/*displaying the result in the graph*/
+            }
+          ?> 
         ]);
 
         var options = {
-          title: 'My Daily Activities'
+          
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -44,6 +47,35 @@
       }
     </script>
 
+    <!--Google API for Bar Chart with edited query-->
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales'],
+          <?php
+            $items = mysqli_query($conn, "SELECT * FROM inventoryitem WHERE s_status = 1 "); /*Query to only get available items*/
+            while ($result = mysqli_fetch_assoc($items)) {
+                echo "['".$result['item_name']."',".$result['quantity']."],";/*displaying the result in the graph*/
+            }
+          ?>
+        ]);
+
+        var options = {
+          chart: {
+            
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
+    
+    <title>Homepage</title>
 </head>
 <body>
     <div class="navWrapper">
@@ -52,14 +84,14 @@
                 <a class="navbar-brand" href="iCHome.php">FINA Health Care</a>
                 <br><br><br>
                 <li class="active"><a href="iCHome.php"><i class="fa fa-pie-chart"> Dashboard</i></a></li>
-                <li><a href="#"><i class="fa fa-book"> Items</i></a></li>
+                <li><a href="iCItemUpdate.php"><i class="fa fa-book"> Items</i></a></li>
                 <li><a href="#"><i class="fa fa-envelope"> Stock Report</i></a></li>
             </ul>
         </div>
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <br><br>
+                    <br>
                     <div class="card">
                         <div class="card-body">
                             <h1>Welcome Mr Osama</h1>
@@ -70,7 +102,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="h2">Dashboard</div>
+                    <div class="h2"><u>Dashboard</u></div>
                 </div>
             </div>
             <div class="row">
@@ -81,16 +113,68 @@
                         </div>
                         <div class="card-body">
                             <!--Insert Table-->
+                            <?php
+                                $itemID = mysqli_query($conn, "SELECT * FROM inventoryitem")
+                            ?>
+                            <table id="editableTable" class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Item ID</th>
+                                        <th>Item Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                        <th>User ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    while( $exists = mysqli_fetch_assoc($itemID) ) {
+                                    ?>
+                                    <tr class="text-center">
+                                        <td><?php echo $exists ['itemID']; ?></td>
+                                        <td><?php echo $exists ['item_name']; ?></td>
+                                        <td><?php echo $exists ['price']; ?></td>
+                                        <td><?php echo $exists ['quantity']; ?></td>
+                                        <?php 
+                                        if ($exists ['s_status'] == 1){ ?>
+                                            <td><i class="fa fa-check" style="color: greenyellow;"></i></td>
+                                            <?php
+                                        }
+                                        else if ($exists ['s_status'] == 2){
+                                            ?>
+                                            <td><i class="fa fa-truck" style="color: orange;"></i></td>
+                                            <?php
+                                        }
+                                        else {?>
+                                            <td><i class="fa fa-times" style="color: red;"></i></td>
+                                        <?php
+                                        }
+                                        ?>                                
+                                        <td><?php echo $exists ['userID']; ?></td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="card">
                         <div class="card-header">
-                            Pie Graph of Current Stock Level
+                            Pie Graphs of Current Stock Level
                         </div>
                         <div class="card-body">
-                            <div id="piechart" style="width: 550px; height: 400px;"></div><!--Insert Graph-->
+                            <div id="piechart" style="width: 550px; height: 180px;"></div><!--Creating the graph-->                            
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card">
+                        <div class="card-header">
+                            Bar Graphs of Current Stock Level
+                        </div>
+                        <div class="card-body">
+                            <div id="columnchart_material" style="width: 550px; height: 180px;"></div><!--Creating the graph-->                            
                         </div>
                     </div>
                 </div>

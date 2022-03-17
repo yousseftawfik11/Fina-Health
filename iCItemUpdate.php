@@ -35,7 +35,64 @@ include("db.php");
         <div class="container">
             <div class="row">
                 <div class="col">
-                    
+                    <h2><u>Items Update</u></h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Stock <br><br>
+                            <form action="pdf_gen.php" method="POST">
+                                <button type="submit" name="btn_pdf" class="btn btn-success">Generate PDF Report</button>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <?php
+                                $itemID = mysqli_query($conn, "SELECT itemID, item_name, price, quantity, s_status, userID FROM inventoryitem");
+                            ?>
+                            <table id="editableTable" class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Item ID</th>
+                                        <th>Item Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                        <th>User ID</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while( $exists = mysqli_fetch_assoc($itemID) ) { ?>
+                                    <tr class="text-center">
+                                    <td><?php echo $exists ['itemID']; ?></td>
+                                    <td><?php echo $exists ['item_name']; ?></td>
+                                    <td><?php echo $exists ['price']; ?></td>
+                                    <td><?php echo $exists ['quantity']; ?></td>
+
+                                    <?php
+                                    if ($exists ['s_status'] == 1){?>
+                                        <td><i class="fa fa-check" style="color: greenyellow;"></i></td>
+                                    <?php
+                                    }
+                                    else if ($exists ['s_status'] == 2){
+                                        ?>
+                                        <td><i class="fa fa-truck" style="color: orange;"></i></td>
+                                        <?php
+                                    }
+                                    else {?>
+                                        <td><i class="fa fa-times" style="color: red;"></i></td>
+                                    <?php
+                                    }
+                                    ?>
+                                    <td><?php echo $exists ['userID']; ?></td>
+                                    <td><a href="iCUpdate.php?itemID=<?php echo $exists["itemID"];?>">Update</a></td>
+                                    </tr>                            
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

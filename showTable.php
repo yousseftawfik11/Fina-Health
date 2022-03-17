@@ -22,7 +22,8 @@
     <?php 
     include 'vendor/autoload.php'; 
     include 'scrubData.php'; 
-    
+    session_start();
+    $_SESSION['arrayManualEditData'] = array();
 
     $arrayFile= array();
 
@@ -45,13 +46,6 @@
 for($i=0;$i<count($arrayFile);$i++){
     arrayLoop($arrayFile[$i]);
 
-}
-
-function uploadData($conn,$batchID,$itemList, $quantityList,$delivery_Date,$total_price)
-{
-    $mainQuery = "INSERT INTO  batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$delivery_Date',total_price='$total_price'";
-    $result1 = $conn->query($mainQuery) or die("Error in main Query".$conn->error);
-    return $result1;
 }
 
 
@@ -90,26 +84,16 @@ $arrFileName=explode('.',$arrayFile);
 
 
         $length = count($array)-1;
-        $totalPrice = $array[$length-1][1];
-
+        $totalPrice = $array[$length][1];
 
 
        //scrub DATA
-        echo "<br>";
-        echo $batchID;
-        $boolBID = scrubBatchID($batchID) . "</b>";
-        echo "&ensp;<b>" .$boolBID;
-
-
-        echo "</br>";
-        echo $deliveyDate;
-        echo "&ensp;<b>" .$boolDd = scrubDeliveryDate($deliveyDate). "</b>";
+        $boolBID = scrubBatchID($batchID);
+        $boolDd = scrubDeliveryDate($deliveyDate);
   
         for($i = 0; $i < count($itemNo); $i++)
         {
-            echo "</br>";
-            echo $itemNo[$i];
-
+           
             $result = scrubNumericData($itemNo[$i]);
 
             if($result == 1){
@@ -118,9 +102,7 @@ $arrFileName=explode('.',$arrayFile);
 
             }else $itemNo[$i] =$result;
 
-            echo "<br>";
-            echo $itemName[$i];
-
+          
             $result =  scrubStringData($itemName[$i]);
 
             if($result == 1){
@@ -129,8 +111,7 @@ $arrFileName=explode('.',$arrayFile);
 
             }else $itemName[$i] =$result;
 
-            echo "<br>";
-            echo $quantity[$i];
+           
 
             $result = scrubNumericData($quantity[$i]);
 
@@ -140,8 +121,6 @@ $arrFileName=explode('.',$arrayFile);
 
             }else $quantity[$i] =$result;
 
-            echo "<br>";
-            echo $price[$i];
 
             $result =  scrubNumericData($price[$i]);
 
@@ -153,46 +132,49 @@ $arrFileName=explode('.',$arrayFile);
         
         }
 
-     
-        echo "<br>";
-        echo $totalPrice;
-        echo "&ensp;<b>" . $boolTp = scrubNumericData($totalPrice). "</b>";
-        echo "<br>";
+        $boolTp = scrubNumericData($totalPrice);
 
 
-
-    
-
-
-        
 
         
 if ($boolBID == 1 || $boolDd == 1 || $verify == 1 || $boolTp == 1)
 {
 
-    echo "manual edit". $arrayFile . "<br>";
-  
+    echo "File require manual edit". $arrayFile . "<br>";
 
+    $editFile = array();
+
+    array_push($editFile, $batchID);
+    array_push($editFile, $deliveyDate);
+    array_push($editFile, $itemNo);
+    array_push($editFile, $itemName);
+    array_push($editFile, $quantity);
+    array_push($editFile, $price);
+    array_push($editFile, $totalPrice);
+ 
+
+
+    array_push( $_SESSION['arrayManualEditData'], $editFile);
+
+  
+    //$_SESSION['arrayManualEditData'] = arrray()
 }
 else
 {
    include 'db.php' ;
 
-    $itemList=implode(",",$itemNo);
-    $quantityList=implode(",",$quantity);
-    print_r($quantity);
-    $tp = floatval($totalPrice);
+   echo "File is correct " . $arrayFile . "<br>";
+
+
  
-    $SheetUpload = uploadData($conn,$batchID,$itemList, $quantityList,$deliveyDate,$tp);
+    $SheetUpload = uploadData($conn,$batchID,$itemNo, $quantity,$deliveyDate,$totalPrice);
     if ($SheetUpload){
            
         echo "uploaded successfuly";
        
        }else {
-           echo "no";
+           echo "batch already exist";
        }
-
-    echo "yayyy " . $arrayFile . "<br>";
 }
 
     }
@@ -412,9 +394,8 @@ function splitNewLine($text) {
 </html>
 
 <br>
-<form action="uploadData.php" method="post" enctype="multipart/form-data">
  <div class="col-md-9">
-           <input type="submit" name="uploadBtn" id="uploadBtn" value="Upload" class="btn btn-success" />
+           <a href="editManual.php" class="btn">Edit Manual</a>
        </div>
 
 </form>

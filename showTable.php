@@ -214,14 +214,6 @@ else{
 
    
 
-   echo "<br>";
-   echo $batchID;
-   echo "<br>";
-   echo $deliveyDate;
-   echo "<br>";
-   echo $totalPrice;
-   echo "<br>";
-
 
    $pdfCount=0;
    for($i =0 ; $i < count($items); $i++ ){
@@ -280,45 +272,22 @@ else{
        $boolTp = scrubNumericData($totalPrice);
 
        
-// if ($boolBID == 1 || $boolDd == 1 || $verify == 1 || $boolTp == 1)
-// {
 
-//    echo "File require manual edit". $arrayFile . "<br>";
-
-//    $editFile = array();
-
-//    array_push($editFile, $batchID);
-//    array_push($editFile, $deliveyDate);
-//    array_push($editFile, $itemNo);
-//    array_push($editFile, $itemName);
-//    array_push($editFile, $quantity);
-//    array_push($editFile, $price);
-//    array_push($editFile, $totalPrice);
-
-
-
-//    array_push( $_SESSION['arrayManualEditData'], $editFile);
-
- 
-//    //$_SESSION['arrayManualEditData'] = arrray()
-// }
-// else
-// {
   include 'db.php' ;
 
   echo "File is correct " . $arrayFile . "<br>";
 
 
 
-   $SheetUpload = uploadData($conn,$batchID,$itemNo, $quantity,$deliveyDate,$totalPrice);
-   if ($SheetUpload){
+   $Sheet2Upload = uploadData($conn,$batchID,$itemNo, $quantity,$deliveyDate,$totalPrice);
+   if ($Sheet2Upload){
           
        echo "uploaded successfuly";
       
       }else {
           echo "batch already exist";
       }
-//}
+
     }
 }
 }

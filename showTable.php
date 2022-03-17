@@ -148,14 +148,22 @@ else
 
 
  
-    $SheetUpload = uploadData($conn,$batchID,$itemNo, $quantity,$deliveyDate,$totalPrice);
-    if ($SheetUpload){
-           
-        echo "uploaded successfuly";
-       
-       }else {
-           echo "batch already exist";
-       }
+   $query = "SELECT * FROM batch WHERE batchID = '$batchID'";
+   $result = $conn->query($query);
+   if($result->num_rows == 0){
+
+     $itemList=implode(",",$itemNo);
+     $quantityList=implode(",",$quantity);
+     $tp = floatval($total_price);
+ 
+     
+     $mainQuery = "INSERT INTO batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$delivery_Date',total_price='$tp'";
+     $result1 = $conn->query($mainQuery) or die("Error in main Query".$conn->error);
+     return $result1;
+
+   }else{
+return false;
+}
 }
 
 }
@@ -194,7 +202,7 @@ else{
     $dDate = explode(":", $array[1]);
 
     $batchID = $bID[1];
-    $deliveyDate = $dDate[1];
+    $delivey_date = $dDate[1];
 
     $length = count($array)-1;
     $tp =  explode(":", $array[$length]);
@@ -276,18 +284,26 @@ else{
   include 'db.php' ;
 
   echo "File is correct " . $arrayFile . "<br>";
+  $query = "SELECT * FROM batch WHERE batchID = '$batchID'";
+      $result = $conn->query($query);
+      if($result->num_rows == 0){
+
+        $itemList=implode(",",$itemNo);
+        $quantityList=implode(",",$quantity);
+        $tp = floatval($totalPrice);
+    
+        
+        $mainQuery = "INSERT INTO batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$delivey_date',total_price='$tp'";
+        $result1 = $conn->query($mainQuery) or die("Error in main Query".$conn->error);
+        return $result1;
+
+      }else{
+   return false;
+  }
 
 
 
-   $Sheet2Upload = uploadData($conn,$batchID,$itemNo, $quantity,$deliveyDate,$totalPrice);
-   if ($Sheet2Upload){
-          
-       echo "uploaded successfuly";
-      
-      }else {
-          echo "batch already exist";
-      }
-
+ 
     }
 }
 }

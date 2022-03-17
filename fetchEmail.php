@@ -1,4 +1,6 @@
-
+ <?php
+// session_start();
+?> 
 <!-- Bootstrap -->
 <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
 <!-- dataTables -->
@@ -28,10 +30,12 @@ body {
 
 				</tbody>
 			</table>
-				
+            <a href="showTable.php" class="btn">Scrub Attachments</a>
 		</div>					
-	</div>					
+	</div>	
+    				
 </div>
+
 
 <!-- Modal message -->		
 <div id="addModal" class="modal fade" role="dialog">
@@ -127,3 +131,44 @@ $(function() {
 			
 });
 </script>
+<?php
+
+
+// if(isset($_POST["scrub"])){
+//     // foreach (new DirectoryIterator('/attachments') as $fileInfo) {
+//     //     if($fileInfo->isDot()) continue;
+        
+//     // }
+// $fileNames= array();
+//     $files = scandir('attachments/');
+//     $files = array_diff(scandir('attachments/'), array('.', '..'));
+// foreach($files as $file) {
+//   //do your work here
+  
+//   array_push($fileNames,$file);
+
+// }
+// session_start();
+//  $_SESSION["fileArr"] = $fileNames;
+// // echo '
+// // <script>
+// // window.location.href="showTable.php";
+// // </script>
+// // ';
+
+
+
+
+// }
+
+// $i=0;
+// $files = glob("attachments/");
+// print_r($files);
+// foreach($files as $f){
+//     $arrayFile[]=$f;
+    
+// }
+
+
+?>
+

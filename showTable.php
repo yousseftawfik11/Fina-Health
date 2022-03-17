@@ -93,9 +93,114 @@ if($_FILES['file']['name']){
        
 
         
-echo 'Total Price: RM '.$totalPrice;
+
 } else{
-    //File Upload Path 
+  
+    // File upload path 
+    $fileName = basename($_FILES["file"]["name"]); 
+    $fileType = pathinfo($fileName, PATHINFO_EXTENSION); 
+     
+    // Allow certain file formats 
+    $allowTypes = array('pdf'); 
+    if(in_array($fileType, $allowTypes)){ 
+    
+         
+        // Initialize and load PDF Parser library 
+        $parser = new \Smalot\PdfParser\Parser(); 
+         
+        // Source PDF file to extract text 
+        $file = $_FILES["file"]["tmp_name"]; 
+         
+        // Parse pdf file using Parser library 
+        $pdf = $parser->parseFile($file); 
+         
+        // Extract text from PDF 
+        $text = $pdf->getText(); 
+         
+        // Add line break 
+     $pdfText = nl2br($text); 
+    }
+
+    $array = splitNewLine($pdfText);
+
+    $batchID = explode(':', $array[0]);
+    $deliveyDate = explode(":", $array[1]);
+
+    $length = count($array)-1;
+
+    $count1 = 0;
+    $count2 = 0;
+
+    for($i=3; $i < $length; $i++) {
+
+    $items[$count1] = preg_split('/\s+/', $array[$i]);
+
+    $count1++;
+   }
+
+   $length = count($array)-1;
+   $totalPrice =  $array[$length];
+  // $totalPrice = explode(":", $array[$length]);
+
+   echo "<br>";
+   echo $batchID[1];
+   echo "<br>";
+   echo $deliveyDate[1];
+   echo "<br>";
+
+
+   $pdfCount=0;
+   for($i =0 ; $i < count($items); $i++ ){
+    $itemNo[$pdfCount] = $items[$i][0];
+    $itemName[$pdfCount] = $items[$i][1];
+    $quantity[$pdfCount] = $items[$i][2];
+    $price[$pdfCount] = $items[$i][3];
+    $pdfCount++;
+}
+$_SESSION['batchID'] = $batchID;
+$_SESSION['itemNo'] = $itemNo;
+$_SESSION['quantity'] = $quantity;
+$_SESSION['totalPrice'] = $totalPrice;
+$_SESSION['delivery_date'] = $deliveyDate;
+$count=Count($items);
+for($i = 0; $i < $count; $i++){
+    ?>
+    <tr>
+        <td><?php echo $itemNo[$i]; ?></td>
+        <td><?php echo$itemName[$i];?></td>
+        <td><?php echo $quantity[$i];?></td>
+        <td><?php echo$price[$i];?></td>
+</tr>
+        <?php
+}
+
 
 }
 }
+
+function splitNewLine($text) {
+    $code=preg_replace('/\n$/','',preg_replace('/^\n/','',preg_replace('/[\r\n]+/',"\n",$text)));
+    return explode("\n",$code);
+}
+?>
+<tbody>
+    </table>
+    </div>
+</body>
+</html>
+<?php
+if($arrFileName[1] == 'xlsx'){
+    echo 'Total Price: RM '.$totalPrice;
+}else{
+    echo $totalPrice;
+}
+
+
+// echo $totalPrice;?>
+<br>
+<form action="uploadData.php" method="post" enctype="multipart/form-data">
+ <div class="col-md-9">
+           <input type="submit" name="uploadBtn" id="uploadBtn" value="Upload" class="btn btn-success" />
+       </div>
+
+</form>

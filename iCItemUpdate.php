@@ -48,6 +48,7 @@ include("db.php");
         <div class="container">
             <div class="row">
                 <div class="col">
+                    <br>
                     <h2><u>Items Update</u></h2>
                 </div>
             </div>
@@ -107,9 +108,9 @@ include("db.php");
                             <form action="pdf_gen.php" method="POST">
                                 <button type="submit" name="btn_pdf" class="btn btn-success">Generate PDF Report</button>
                             </form>
-                            <br>
+                            &emsp;
                             <form action="pdf_genUnavailable.php" method="POST">
-                                <button type="submit" name="btn_pdf2" class="btn btn-success">Generate unavailable PDF Report</button>
+                                <button type="submit" name="btn_pdf2" class="btn btn-success">Generate unavailable Items PDF Report</button>
                             </form>
                         </div>
                     </div>
@@ -130,15 +131,15 @@ include("db.php");
                                     <tbody class="text-center">
                                         <tr>
                                             <th scope="row">Item Name: </th>
-                                            <td><input type="text" name="item_name"></td>
+                                            <td><input type="text" name="item_name" pattern="[a-zA-Z]{1,}" required></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Price: </th>
-                                            <td><input type="text" name="price"></td>
+                                            <td><input type="number" name="price" min="0" required></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Quantity: </th>
-                                            <td><input type="text" name="quantity"></td>
+                                            <td><input type="number" name="quantity" min="0" required></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Status: </th>

@@ -12,7 +12,7 @@
     width: 200px;
     height: 100vh;
     background: #42C2FF;
-    border-radius: 0px 25px 25px 25px;
+    border-radius: 0px 25px 25px 0px;
     box-shadow: 10px 0 5px -2px #888;
 }
 

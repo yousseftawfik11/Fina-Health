@@ -23,9 +23,9 @@ include("mailer.php");
 </body>
 </html>
 <?php
-$itemID = mysqli_query($conn, "SELECT * FROM inventoryitem");
+$itemID = mysqli_query($conn, "SELECT * FROM inventoryitem WHERE s_status=0");
 
-if(isset($_POST['btn_pdf'])){
+if(isset($_POST['btn_pdf2'])){
     class PDF extends FPDF{
         // Page header
         function Header()
@@ -82,10 +82,10 @@ if(isset($_POST['btn_pdf'])){
         }
         $pdf->Cell(30, 10, $row['userID'],1, 1, 'C');
     }
-    $filename="weeklyReports/weeklyReport.pdf";
+    $filename="weeklyReports/unavailableItems.pdf";
     $pdf->Output($filename,'F');
 }
-sendStockReport();
+sendUnavailableStockReport();
 echo '
 <script>
 Swal.fire(

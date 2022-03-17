@@ -62,7 +62,7 @@ $row = mysqli_fetch_array($result);
                                         </tr>
                                         <tr>
                                             <th scope="row">Item Name: </th>
-                                            <td><input type="text" name="item_name" value="<?php echo $row['item_name']; ?>"></td>
+                                            <td><input type="text" name="item_name" value="<?php echo $row['item_name']; ?>" pattern="[a-zA-Z]{1,}" required></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Price: </th>

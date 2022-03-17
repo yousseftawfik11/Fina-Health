@@ -22,7 +22,8 @@
     <?php 
     include 'vendor/autoload.php'; 
     include 'scrubData.php'; 
-    
+    session_start();
+    $_SESSION['arrayManualEditData'] = array();
 
     $arrayFile= array();
 
@@ -40,6 +41,7 @@
 
     
 
+    
 
 for($i=0;$i<count($arrayFile);$i++){
     arrayLoop($arrayFile[$i]);
@@ -53,6 +55,8 @@ $arrFileName=explode('.',$arrayFile);
 
     if ($arrFileName[1] == 'xlsx') {
         echo "EXCEl";
+
+        $verify = 0;
 
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = $reader->load($arrayFile);
@@ -80,77 +84,97 @@ $arrFileName=explode('.',$arrayFile);
 
 
         $length = count($array)-1;
-        $totalPrice = $array[$length-1][1];
-
+        $totalPrice = $array[$length][1];
 
 
        //scrub DATA
-        echo "<br>";
-        echo $batchID;
-        $boolBID = scrubBatchID($batchID) . "</b>";
-        echo "&ensp;<b>" .$boolBID;
-
-
-        echo "</br>";
-        echo $deliveyDate;
-        echo "&ensp;<b>" .$boolDd = scrubDeliveryDate($deliveyDate). "</b>";
+        $boolBID = scrubBatchID($batchID);
+        $boolDd = scrubDeliveryDate($deliveyDate);
   
-        for($i = 0; $i < count($itemNo); $i++ )
+        for($i = 0; $i < count($itemNo); $i++)
         {
-            echo "</br>";
-            echo $itemNo[$i];
-            echo "&ensp;<b>" . $boolIno[$i] = scrubNumericData($itemNo[$i]). "</b>";
+           
+            $result = scrubNumericData($itemNo[$i]);
 
-            echo "<br>";
-            echo $itemName[$i];
-            echo "&ensp;<b>" . $boolIname[$i] = scrubStringData($itemName[$i]). "</b>";
+            if($result == 1){
+                $verify = 1;
+            }else if($result == 0){
 
-            echo "<br>";
-            echo $quantity[$i];
-            echo "&ensp;<b>" . $boolIq[$i] = scrubNumericData($quantity[$i]). "</b>";
+            }else $itemNo[$i] =$result;
 
-            echo "<br>";
-            echo $price[$i];
-            echo "&ensp;<b>" . $boolP[$i] = scrubNumericData($price[$i]). "</b>";
+          
+            $result =  scrubStringData($itemName[$i]);
+
+            if($result == 1){
+                $verify = 1;
+            }else if($result == 0){
+
+            }else $itemName[$i] =$result;
+
+           
+
+            $result = scrubNumericData($quantity[$i]);
+
+            if($result == 1){
+                $verify = 1;
+            }else if($result == 0){
+
+            }else $quantity[$i] =$result;
+
+
+            $result =  scrubNumericData($price[$i]);
+
+            if($result == 1){
+                $verify = 1;
+            }else if($result == 0){
+
+            }else $price[$i] =$result;
+        
         }
 
-        echo "<br>";
-        echo $totalPrice;
-        echo "&ensp;<b>" . $boolTp = scrubNumericData($totalPrice). "</b>";
-
-        $item_verify;
-        for($i = 0; $i < count($itemNo); $i++ )
-        {
-            if( $boolIno != 1 || $boolIname != 1 || $boolIq != 1 || $boolP != 1)
-            {
-                $item_verify = 0;
-            }
-            else
-            {
-                $item_verify = 1;
-                break;
-            }
+        $boolTp = scrubNumericData($totalPrice);
 
 
-        }
 
-if ($boolBID != 1 && $boolDd != 1 && $item_verify != 1 && $boolTp != 1)
+        
+if ($boolBID == 1 || $boolDd == 1 || $verify == 1 || $boolTp == 1)
 {
-    include 'db.php' ;
-    $itemList=implode(",",$itemNo);
-    $quantityList=implode(",",$quantity);
 
-    $insert = "INSERT INTO batch (batchID, itemList, quantityList, delivery_Date, total_price) 
-    VALUES('$batchID', '$itemList', '$quantityList', $deliveyDate, '$totalPrice')";
-    
-    $query = mysqli_query($conn, $insert);
-  //  $result1 = $conn->query($insert) or die("Error in main Query".$conn->error);
+    echo "File require manual edit". $arrayFile . "<br>";
+
+    $editFile = array();
+
+    array_push($editFile, $batchID);
+    array_push($editFile, $deliveyDate);
+    array_push($editFile, $itemNo);
+    array_push($editFile, $itemName);
+    array_push($editFile, $quantity);
+    array_push($editFile, $price);
+    array_push($editFile, $totalPrice);
+ 
+
+
+    array_push( $_SESSION['arrayManualEditData'], $editFile);
+
   
-    echo "yayyy " . $arrayFile . "<br>";
+    //$_SESSION['arrayManualEditData'] = arrray()
 }
 else
 {
-    echo "manual edit". $arrayFile . "<br>";
+   include 'db.php' ;
+
+   echo "File is correct " . $arrayFile . "<br>";
+
+
+ 
+    $SheetUpload = uploadData($conn,$batchID,$itemNo, $quantity,$deliveyDate,$totalPrice);
+    if ($SheetUpload){
+           
+        echo "uploaded successfuly";
+       
+       }else {
+           echo "batch already exist";
+       }
 }
 
     }
@@ -370,9 +394,6 @@ function splitNewLine($text) {
 </html>
 
 <br>
-<form action="uploadData.php" method="post" enctype="multipart/form-data">
  <div class="col-md-9">
-           <input type="submit" name="uploadBtn" id="uploadBtn" value="Upload" class="btn btn-success" />
+ <button onclick="window.location.href='editManual.php'">Edit Manual</button>
        </div>
-
-</form>

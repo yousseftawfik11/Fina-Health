@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script src="jquery.tabledit.min.js"></script> 
+    <style> .left {margin-left:43%;text-align:left;margin-top:2%;margin-bottom:2%} </style>
+
+    <!--Font Awesome 4 CDN-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+<body>
+<h3 align="center">Item Table</h3>
+   <br />
+
+<?php
+
+session_start();
+
+$fileData = $_SESSION['arrayManualEditData'];
+
+for($i=0;$i<count($fileData);$i++){
+
+    showEditTable($fileData[$i][0], $fileData[$i][1], $fileData[$i][2], $fileData[$i][3], $fileData[$i][4], $fileData[$i][5], $fileData[$i][6]);
+
+}
+
+
+function showEditTable($batchID, $deliveyDate, $itemNo, $itemName, $quantity, $price, $totalPrice)
+{
+    $_SESSION['batchID'] = $batchID;
+    $_SESSION['delivery_date'] = $deliveyDate;
+    $_SESSION['totalPrice'] = $totalPrice;
+  
+    $_SESSION['itemNo'] = $itemNo;
+    $_SESSION['itemName'] = $itemName;
+    $_SESSION['quantity'] = $quantity;
+    $_SESSION['price'] = $price;
+
+    ?>
+     <div class="table-responsive">
+    <table id="editable_table" class="table table-bordered table-striped">
+  
+    <?php
+    echo "<tr><th>Batch Id: ".$batchID  . "</th>";
+
+
+    echo "<th>Delivery Date: ".$deliveyDate . "&ensp;</th>";
+   
+
+    
+    echo "<th>Total Price: RM" .$totalPrice . "</th>";
+?>
+
+    <th>
+</th>
+<th>
+    <form action="formUpdate.php" method="post">
+                   <div class="col-md-9">
+                <input type="submit" name="editHeader" value="EDIT" class="btn" />
+                 </div>
+
+                 </form>
+    </th></tr>
+  
+    
+     <tr>
+     <th>Item Id</th>
+     <th>Item Name</th>
+     <th>Quantity</th>
+     <th>Price</th>
+     <th></th>
+
+</tr>
+     
+     <tbody>
+         <?php
+    
+    for($i = 0; $i < count($itemNo); $i++){
+        ?>
+        <tr>
+            <td><?php
+            echo $itemNo[$i];
+
+            ?></td>
+
+            <td><?php
+             echo$itemName[$i];
+
+             
+            
+             ?></td>
+             
+            <td><?php
+            echo $quantity[$i];
+            
+           
+            ?>
+            </td>
+            <td><?php
+            echo$price[$i];
+
+            ?>
+                 <td>
+
+                 <form action="formUpdate.php" method="post">
+                   <div class="col-md-9">
+                <input type="submit" name="editItem" value="EDIT" class="btn" />
+                 </div>
+
+                 </form>
+                
+                 </td>
+    
+    
+    <?php
+               
+           
+      }
+
+     ?></td>
+
+</tr>
+  
+
+<!-- all i added -->
+<tbody>
+
+    </table>
+    
+    <br>
+   
+     <?php
+}
+
+
+
+?>
+
+
+

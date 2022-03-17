@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <body>
-<h3 align="center">Item Table</h3>
+<!-- <h3 align="center">Item Table</h3>
    <br />
    <div class="table-responsive">
     <table id="editable_table" class="table table-bordered table-striped">
@@ -14,13 +15,30 @@
  <th>Item Name</th>
       <th>Quantity</th>
       <th>Price</th>
-</tr>
+</tr> -->
 <tbody>
     <?php 
     include 'vendor/autoload.php'; 
     include 'scrubData.php'; 
-$arrayFile[0]='10.xlsx';
-$arrayFile[1]='pdfFormat.pdf';
+
+    $arrayFile= array();
+
+
+        $files = scandir('attachments/');
+        $files = array_diff(scandir('attachments/'), array('.', '..'));
+    foreach($files as $file) {
+      //do your work here
+      
+      array_push($arrayFile,'attachments/'.$file);
+    
+    }
+
+   
+    
+
+
+// $arrayFile[0]='10.xlsx';
+// $arrayFile[1]='pdfFormat.pdf';
 
 
 for($i=0;$i<count($arrayFile);$i++){

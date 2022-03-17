@@ -27,7 +27,7 @@ try {
     $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
     //Recipients
-    $mail->setFrom('finahealthcare123@gmail.com', 'Pharmacy Weekly Stock Report');
+    $mail->setFrom('announcements@tornadoteam.website', 'Pharmacy');
 
         $mail->addAddress('finahealthcare123@gmail.com', 'Weekly Report');     //Add a recipient
 
@@ -38,8 +38,7 @@ try {
     //Attachments
     $uploaddri='weeklyReports/';
     $Fname='weeklyReport.pdf';
-    $time = date('H:i:s');
-    $mail->addAttachment($uploaddri.$Fname,"weeklyReport".$time.".pdf");         //Add attachments
+    $mail->addAttachment($uploaddri.$Fname,"weeklyReport".rand(1000,9999).".pdf");         //Add attachments
     // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
 
     //Content
@@ -109,9 +108,9 @@ function businessSend($Fname){
             $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         
             //Recipients
-            $mail->setFrom('finahealthcare123@gmail.com', 'Pharmacy Unavailable Stock Request');
+            $mail->setFrom('announcements@tornadoteam.website', 'Pharmacy');
         
-                $mail->addAddress('finahealthcare123@gmail.com', 'Unavailable Stock Request');     //Add a recipient
+                $mail->addAddress('finahealthcare123@gmail.com', 'Stock Purchase');     //Add a recipient
         
             
             // $mail->addReplyTo('info@example.com', 'Information');
@@ -121,7 +120,7 @@ function businessSend($Fname){
             $uploaddri='weeklyReports/';
             $Fname='unavailableItems.pdf';
             $time = date('H:i:s');
-            $mail->addAttachment($uploaddri.$Fname,"unavailableItems".$time.".pdf");         //Add attachments
+            $mail->addAttachment($uploaddri.$Fname,"unavailableItems".rand(1000,9999).".pdf");         //Add attachments
             // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
         
             //Content

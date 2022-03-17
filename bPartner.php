@@ -2,6 +2,7 @@
 <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
 <!-- dataTables -->
 <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="sweetalert2.all.min.js"></script>
@@ -9,10 +10,11 @@
     <link rel="stylesheet" href="sweetalert2.min.css">
 <style>
 body {
-	padding: 20px 10px 20px 10px
+	padding: 20px 10px 20px 10px;
+	background-color: #EFFFFD;
 }
 </style>
-
+<h1>Business Department</h1>
 <div class="container">
 	<div class="row">
 		<div class="col-md-12"> 
@@ -37,7 +39,8 @@ body {
 
     <form method="post" action="<?php echo $_SERVER['PHP_SELF']?>"  enctype="multipart/form-data">
   <input type="file" name="uploaded_file" id="uploaded_file" />
-  <input type="submit" name="sendReports" value="Send Document"/>
+  
+  <input type="submit" name="sendReports" value="Send Document" class="submit_btn"/>
 </form>
 
     				

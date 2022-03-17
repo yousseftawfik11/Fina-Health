@@ -107,6 +107,10 @@ include("db.php");
                             <form action="pdf_gen.php" method="POST">
                                 <button type="submit" name="btn_pdf" class="btn btn-success">Generate PDF Report</button>
                             </form>
+                            <br>
+                            <form action="pdf_genUnavailable.php" method="POST">
+                                <button type="submit" name="btn_pdf2" class="btn btn-success">Generate unavailable PDF Report</button>
+                            </form>
                         </div>
                     </div>
                 </div>

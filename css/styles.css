@@ -18,3 +18,18 @@
     height: 20px;
     margin-bottom: 8px;
   }
+
+  .submit_btn{
+    border-radius: 13px;
+    padding: 5px;
+    background-color: #478daf;
+    color: white;
+    border: none;
+    transition: all ease-in 0.3s;
+  }
+  .submit_btn:hover{
+    padding-left: 9px;
+    padding-right: 9px;
+
+
+  }

@@ -2,7 +2,27 @@
 require_once 'FPDF/fpdf.php';
 include ("db.php");
 include("mailer.php");
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!--Alert Message-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+
+    <title>PDF Gen</title>
+</head>
+<body>
+    
+</body>
+</html>
+<?php
 $itemID = mysqli_query($conn, "SELECT * FROM inventoryitem");
 
 if(isset($_POST['btn_pdf'])){
@@ -66,10 +86,15 @@ if(isset($_POST['btn_pdf'])){
     $pdf->Output($filename,'F');
 }
 sendStockReport();
-echo '<script>alert("File saved successfully")</script>';
 echo '
-        <script>
-        window.location.href="iCItemUpdate.php";
-        </script>
-      ';
+<script>
+Swal.fire(
+    "File Generated Successfully",
+    "Return back to Items Page",
+    "success"
+).then(function() {
+    window.location = "iCItemUpdate.php";
+});
+</script>
+';
 ?>

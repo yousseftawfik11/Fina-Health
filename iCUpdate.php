@@ -1,15 +1,6 @@
 <?php
 include("db.php");
-if (count($_POST) > 0) {
-    $update = mysqli_query($conn, "UPDATE inventoryitem  SET item_name='" . $_POST['item_name'] . "',
-    price='" . $_POST['price'] . "', quantity='" . $_POST['quantity'] . "', s_status='" . $_POST['s_status'] . 
-    "' WHERE itemID='" . $_GET['itemID'] . "'");
-    if ($update) {
-        echo '<script>alert("Record Successfully edited")</script>';
-    } else {
-        echo 'Failed to edit record because ' . mysqli_error($conn);
-    }
-}
+
 $result = mysqli_query($conn, "SELECT * FROM inventoryitem WHERE itemID='" . $_GET['itemID'] . "'");
 $row = mysqli_fetch_array($result);
 ?>
@@ -30,6 +21,12 @@ $row = mysqli_fetch_array($result);
 
     <!--Font Awesome 4 CDN-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--Alert Message-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
     
     <title>Item Update</title>
 </head>
@@ -61,16 +58,16 @@ $row = mysqli_fetch_array($result);
                                             <td><input type="text" name="itemID" value="<?php echo $row['itemID']; ?>" readonly></td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Item Name: </th>
+                                            <th scope="row">Item Name:<p class="text-muted">(Letters only)</p></th>
                                             <td><input type="text" name="item_name" value="<?php echo $row['item_name']; ?>" pattern="[a-zA-Z]{1,}" required></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Price: </th>
-                                            <td><input type="text" name="price" value="<?php echo $row['price']; ?>"></td>
+                                            <td><input type="number" name="price" value="<?php echo $row['price']; ?>" min="0" required></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Quantity: </th>
-                                            <td><input type="text" name="quantity" value="<?php echo $row['quantity']; ?>"></td>
+                                            <td><input type="number" name="quantity" value="<?php echo $row['quantity']; ?>" min="0" required></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Status: </th>
@@ -104,3 +101,26 @@ $row = mysqli_fetch_array($result);
     
 </body>
 </html>
+
+<?php
+if (count($_POST) > 0) {
+    $update = mysqli_query($conn, "UPDATE inventoryitem  SET item_name='" . $_POST['item_name'] . "',
+    price='" . $_POST['price'] . "', quantity='" . $_POST['quantity'] . "', s_status='" . $_POST['s_status'] .
+        "' WHERE itemID='" . $_GET['itemID'] . "'");
+    if ($update) {
+        echo '
+        <script>
+            Swal.fire(
+                "Item Updated Successfully",
+                "Return back to Items Page",
+                "success"
+            ).then(function() {
+                 window.location = "iCItemUpdate.php";
+            });
+        </script>
+        ';
+    } else {
+        echo 'Failed to edit record because ' . mysqli_error($conn);
+    }
+}
+?>

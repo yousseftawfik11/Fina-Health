@@ -3,23 +3,7 @@
 <head>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-    table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
 <body>
 <h3 align="center">Item Table</h3>
    <br />
@@ -34,6 +18,7 @@ tr:nth-child(even) {
 <tbody>
     <?php 
     include 'vendor/autoload.php'; 
+    include 'scrubData.php'; 
 $arrayFile[0]='10.xlsx';
 $arrayFile[1]='pdfFormat.pdf';
 
@@ -41,6 +26,7 @@ $arrayFile[1]='pdfFormat.pdf';
 for($i=0;$i<count($arrayFile);$i++){
     arrayLoop($arrayFile[$i]);
     ?>
+    
     <tr>
         <td>New File </td>
 </tr>
@@ -63,54 +49,132 @@ $arrFileName=explode('.',$arrayFile);
 
         $batchID = $array[0][1];
         $deliveyDate = $array[1][1];
-
         echo "<br>";
         echo "Batch Id: ".$batchID  . "&ensp;";
+        $boolBatchId=scrubBatchID($batchID);
+        echo $boolBatchId;
+        echo "</br>";
+        echo $deliveyDate;
+
+        $boolDeliveryDate=scrubDeliveryDate($deliveyDate);
+        echo "Boolean".$boolDeliveryDate;
+      
+        $length = count($array)-2;
+$counter=0;
         echo "<br>";
-        echo "Delivery Date: ".$deliveyDate  . "&ensp;";
-     
-        $length = count($array);
+   
+       for($i = 4; $i < $length; $i++ ){
+       $itemNo[$counter] = $array[$i][0];
+       $itemName[$counter] = $array[$i][1];
+       $quantity[$counter] = $array[$i][2];
+       $price[$counter] = $array[$i][3];
+       $counter++;
+       }
+      
+$totalPrice = $array[$length-1][1];
+    $arrayNewName=array();
+    $arrayNewNo=array();
+    $flagItemName=1;
+    $flagItemNo=1;
+         for($i = 0; $i < count($itemNo); $i++){
 
-        $totalPrice = $array[$length-1][1];
-    
-        $a =0;
+            //number
+           $resultItemNo = scrubNumericData($itemNo[$i]);
+   
+           if($resultItemNo==0)  {
+               $flagItemNo=0;
+           }else if($resultItemNo==-1){
+            
+            array_push($arrayNewNo,$itemNo[$i]);
+           }else {
+            array_push($arrayNewNo,$resultItemNo);
+           }
 
-         $length = count($array)-2;
 
-         echo "<br>";
-    
-        for($i = 4; $i < $length; $i++ ){
-        $itemNo[$a] = $array[$i][0];
-        $itemName[$a] = $array[$i][1];
-        $quantity[$a] = $array[$i][2];
-        $price[$a] = $array[$i][3];
-        $a++;
+           //name
+             
+             $resultItemName = scrubStringData($itemName[$i]);
+            
+            
+             if($resultItemName==null){
+                array_push($arrayNewName,$itemName[$i]);
+
+             }else if($resultItemName==1){
+                 $flagItemName=0;
+        
+             }
+        
+             else {
+                array_push($arrayNewName,$resultItemName);
+             
+             }
+
+         
+                 //quantity
+             
+             $resultItemQuantity = scrubStringData($quantity[$i]);
+            
+            
+             if($resultItemName==null){
+                array_push($arrayNewName,$itemName[$i]);
+
+             }else if($resultItemName==1){
+                 $flagItemName=0;
+        
+             }
+        
+             else {
+                array_push($arrayNewName,$resultItemName);
+             
+             }
+                 
+            
+           
+                 
+                // $result = scrubQuantity($price[$i]);
+                //  if($result == null)
+                //  {
+                //     echo "<i class='fa fa-check' style='color: greenyellow;'></i><br>";
+                //  }else if ($result == 1)
+                //  {
+                //     echo "<i class='fa fa-times' style='color: red;'></i>";
+
+                //  }else
+                //  {
+                //     $price[$i] = $result;
+                //           echo " = " . $price[$i]. "&ensp;";
+                //      echo "<i class='fa fa-check' style='color: green;'></i><br>";
+                    
+                //  }
+
+              
+  
         }
-        $_SESSION['batchID'] = $batchID;
-        $_SESSION['itemNo'] = $itemNo;
-        $_SESSION['quantity'] = $quantity;
-        $_SESSION['totalPrice'] = $totalPrice;
-        $_SESSION['delivery_date'] = $deliveyDate;
- 
+
+//   print_r($arrayNewNo);
+ if($batchID==1){
+  echo $batchID;
+    $_SESSION['batchID'] = $batchID;
+ }
+ if($deliveyDate==1){
+    echo $deliveyDate;
+    $_SESSION['deliveryDate'] = $deliveyDate;
+ }
+
+ if($flagItemNo==1){
+    echo "The item no:  ".$itemNo;
+    $_SESSION['itemNo'] = $itemNo;  
+}
+
+if($flagItemName==1){
+    echo "The itemName:  ".$itemName;
+    $_SESSION['itemName'] = $itemName;  
+}
         //Display variables
          $count = count($itemNo);
-         for($i = 0; $i < $count; $i++){
-            ?>
-            <tr>
-                <td><?php echo $itemNo[$i]; ?></td>
-                <td><?php echo$itemName[$i];?></td>
-                <td><?php echo $quantity[$i];?></td>
-                <td><?php echo$price[$i];?></td>
-        </tr>
-                <?php
-        }
-        ?>
-       <tr>
-       <td><?php echo "Total Price: RM ".$totalPrice;?>
       
-       </td>
-
-       </tr>
+        ?>
+     
 <?php
         
 

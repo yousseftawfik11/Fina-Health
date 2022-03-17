@@ -31,19 +31,19 @@ function scrubNumericData($num)
 
         if ( !is_numeric($num[0])) {
         
-            $arr = preg_split('/(?<=[a-z])(?=[0-9]+)/i',$qty); 
+            $arr = preg_split('/(?<=[a-z])(?=[0-9]+)/i',$num); 
     
             return $arr[1];
         
         }
     } 
-    else if(empty($qty))
+    else if(empty($num))
     {
-            return 1;
+            return 0 ;
     }
     else 
     {
-            return null;
+            return -1;
     }
 }
 
@@ -55,7 +55,7 @@ function scrubStringData($str)
     }
     else if (is_numeric($str[0])) 
     {
-        $arr = preg_split('/(?=[a-z])/i', $name, 2);
+        $arr = preg_split('/(?=[a-z])/i', $str, 2);
         return $arr[1];
     }
     else 

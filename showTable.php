@@ -121,7 +121,7 @@ $arrFileName=explode('.',$arrayFile);
             echo "<br>";
             echo $itemName[$i];
 
-            $result =  scrubStringData($itemName[$i]). "</b>";
+            $result =  scrubStringData($itemName[$i]);
 
             if($result == 1){
                 $verify = 1;
@@ -132,7 +132,7 @@ $arrFileName=explode('.',$arrayFile);
             echo "<br>";
             echo $quantity[$i];
 
-            $result = scrubNumericData($quantity[$i]). "</b>";
+            $result = scrubNumericData($quantity[$i]);
 
             if($result == 1){
                 $verify = 1;
@@ -143,7 +143,7 @@ $arrFileName=explode('.',$arrayFile);
             echo "<br>";
             echo $price[$i];
 
-            $result =  scrubNumericData($price[$i]). "</b>";
+            $result =  scrubNumericData($price[$i]);
 
             if($result == 1){
                 $verify = 1;
@@ -180,6 +180,7 @@ else
 
     $itemList=implode(",",$itemNo);
     $quantityList=implode(",",$quantity);
+    print_r($quantity);
     $tp = floatval($totalPrice);
  
     $SheetUpload = uploadData($conn,$batchID,$itemList, $quantityList,$deliveyDate,$tp);

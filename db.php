@@ -61,47 +61,47 @@ $sql = "CREATE TABLE IF NOT EXISTS inventoryItem (
   )";
   
   if ($conn->query($sql) === TRUE) {
-       // Do nothing if table created successfully
+       // Do nothing if table created 
   } else {
     echo "Error creating table: " . $conn->error;
   }
 
 
-// // Create the report table if it doesnt exist
-// $sql = "CREATE TABLE IF NOT EXISTS report (
-//     reportID VARCHAR(40) NOT NULL PRIMARY KEY, 
-//     title VARCHAR(100) NOT NULL, 
-//     batchID VARCHAR(40) NOT NULL, 
-//     FOREIGN KEY (batchID) REFERENCES batch(batchID),
-//     userID VARCHAR(40) NOT NULL, 
-//     FOREIGN KEY (userID) REFERENCES user(userID),
-//     gen_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-//   )";
+// Create the batch table 
+$sql = "CREATE TABLE IF NOT EXISTS batch (
+    batchID VARCHAR(40) NOT NULL PRIMARY KEY, 
+    itemList VARCHAR(1000) NOT NULL, 
+    quantityList VARCHAR(1000) NOT NULL, 
+    delivery_Date VARCHAR(40) NOT NULL,
+    total_price DOUBLE PRECISION(100,2) NOT NULL
+  )";
   
-//   if ($conn->query($sql) === TRUE) {
-//        // Do nothing if table created successfully
-//   } else {
-//     echo "Error creating table: " . $conn->error;
-//   }
-  
+  if ($conn->query($sql) === TRUE) {
+       // Do nothing if table created 
+  } else {
+    echo "Error creating table: " . $conn->error;
+  }
 
 
-// // Create the inventoryItem table if it doesnt exist
-//   $sql = "CREATE TABLE IF NOT EXISTS inventoryItem (
-//     itemID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
-//     item_name VARCHAR(100) NOT NULL, 
-//     price DOUBLE PRECISION(100,2) NOT NULL, 
-//     quantity INT(100) NOT NULL, 
-//     s_status INT(40) NOT NULL,
-//     userID VARCHAR(40) NOT NULL, 
-//     FOREIGN KEY (userID) REFERENCES user(userID)
-//   )";
+
+// Create the report table 
+$sql = "CREATE TABLE IF NOT EXISTS report (
+    reportID VARCHAR(40) NOT NULL PRIMARY KEY, 
+    title VARCHAR(100) NOT NULL, 
+    batchID VARCHAR(40) NOT NULL, 
+    FOREIGN KEY (batchID) REFERENCES batch(batchID),
+    userID INT NOT NULL, 
+    FOREIGN KEY (userID) REFERENCES user(userID),
+    gen_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  )";
   
-//   if ($conn->query($sql) === TRUE) {
-//        // Do nothing if table created successfully
-//   } else {
-//     echo "Error creating table: " . $conn->error;
-//   }
+  if ($conn->query($sql) === TRUE) {
+       // Do nothing if table created 
+  } else {
+    echo "Error creating table: " . $conn->error;
+  }
+  
+
 
  
 ?>

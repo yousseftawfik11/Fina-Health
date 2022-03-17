@@ -49,6 +49,7 @@ if(mysqli_num_rows($Check) > 0  && password_verify($password,$row['password_hash
 //register
 if(isset($_POST["submit2"])){
 
+	$name = strtolower(mysqli_real_escape_string($conn, $_POST['name']));
 	$email = strtolower(mysqli_real_escape_string($conn, $_POST['email']));
 	$pass=strtolower( mysqli_real_escape_string($conn,$_POST['pass']));
 	$passHash= password_hash($pass, PASSWORD_DEFAULT);
@@ -61,7 +62,7 @@ if(isset($_POST["submit2"])){
 		echo "email already exists";
 
 	  }else{
-		$query="INSERT INTO user(userID,email,password_hash,userRole) 
+		$query="INSERT INTO user(u_name,email,password_hash,userRole) 
         VALUES('$name','$email','$passHash','$role')";
         mysqli_query($conn,$query);
 
@@ -106,7 +107,10 @@ if(isset($_POST["submit2"])){
 </form>
 
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
+<div class="group">
+							<label for="name" class="label">Name</label></br>
+							<input id="name" name="name" type="text" class="input" required>
+						</div>
 <div class="group">
 							<label for="email" class="label">Email Address</label></br>
 							<input id="email" name="email" type="email" class="input" required>

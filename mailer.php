@@ -38,7 +38,8 @@ try {
     //Attachments
     $uploaddri='weeklyReports/';
     $Fname='weeklyReport.pdf';
-    $mail->addAttachment($uploaddri.$Fname);         //Add attachments
+    $time = date('H:i:s');
+    $mail->addAttachment($uploaddri.$Fname,"weeklyReport".$time.".pdf");         //Add attachments
     // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
 
     //Content

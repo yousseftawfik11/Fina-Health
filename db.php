@@ -27,6 +27,7 @@ $conn = new mysqli($servername,$username,$password,"finaHealthCare");
 //Create user table 
 $sql = "CREATE TABLE IF NOT EXISTS user (
     userID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    u_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL,
     UNIQUE (email),
     password_hash VARCHAR(100) NOT NULL,

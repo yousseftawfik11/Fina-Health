@@ -17,7 +17,7 @@ $row = mysqli_fetch_array($Check);
 
 if(mysqli_num_rows($Check) > 0  && password_verify($password,$row['password_hash'])){
 
-	$_SESSION["username"] = $row['email'];
+	$_SESSION["user_id"] = $row['userID'];
 
     if($row['userRole']==1){
         echo '
@@ -53,6 +53,7 @@ if(isset($_POST["submit2"])){
 	$pass=strtolower( mysqli_real_escape_string($conn,$_POST['pass']));
 	$passHash= password_hash($pass, PASSWORD_DEFAULT);
 	$role= mysqli_real_escape_string($conn,$_POST["role"]);
+	$role=1;
 
 	$EmailQuery="SELECT email from user WHERE email='$email'";
 	if($result= mysqli_query($conn,$EmailQuery)){
@@ -63,26 +64,6 @@ if(isset($_POST["submit2"])){
 		$query="INSERT INTO user(userID,email,password_hash,userRole) 
         VALUES('$name','$email','$passHash','$role')";
         mysqli_query($conn,$query);
-
-        if($role==1){
-			echo '
-			<script>
-			window.location.href="businessHome.php";
-			</script>
-		  ';
-		}elseif($role==2){
-			echo '
-        <script>
-        window.location.href="uploadForm.php";
-        </script>
-      ';
-		}elseif($role==3){
-			echo '
-        <script>
-        window.location.href="iCHome.php";
-        </script>
-      ';
-		}
 
 	  }
 

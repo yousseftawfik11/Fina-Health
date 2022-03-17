@@ -4,7 +4,7 @@
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     width: fit-content !important;
-    margin-top: 10%;
+    margin-top: 5%;
     margin-left: auto;
     margin-right: auto;
     padding: 10px;
@@ -16,4 +16,5 @@
     width: 95%;
     border-radius: 5px;
     height: 20px;
+    margin-bottom: 8px;
   }

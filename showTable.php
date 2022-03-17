@@ -51,28 +51,9 @@ if($_FILES['file']['name']){
 
         echo "<br>";
         echo "Batch Id: ".$batchID  . "&ensp;";
-        if(scrubBatchID($batchID))
-        {
-         
-            echo "<i class='fa fa-check' style='color: greenyellow;'></i><br>";
-           
-        }else {
-            echo "<i class='fa fa-times' style='color: red;'></i>";
-
-        }
         echo "<br>";
-        echo "Delivery Date: ".$deliveyDate . "&ensp;";
-        if(scrubDate($deliveyDate))
-        {
-         
-            echo "<i class='fa fa-check' style='color: greenyellow;'></i><br>";
-           
-        }else {
-            echo "<i class='fa fa-times' style='color: red;'></i>";
-
-        }
-
-        echo "<br>";
+        echo "Delivery Date: ".$deliveyDate  . "&ensp;";
+     
         $length = count($array);
 
         $totalPrice = $array[$length-1][1];
@@ -92,7 +73,6 @@ if($_FILES['file']['name']){
         $a++;
         }
         $_SESSION['batchID'] = $batchID;
-        echo $_SESSION['batchID'];
         $_SESSION['itemNo'] = $itemNo;
         $_SESSION['quantity'] = $quantity;
         $_SESSION['totalPrice'] = $totalPrice;
@@ -100,7 +80,7 @@ if($_FILES['file']['name']){
  
         //Display variables
          $count = count($itemNo);
-
+echo $itemNo;
          for($i = 0; $i < $count; $i++){
             ?>
             <tr>

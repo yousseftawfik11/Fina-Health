@@ -82,7 +82,6 @@ if($_FILES['file']['name']){
  
         //Display variables
          $count = count($itemNo);
-echo $itemNo;
          for($i = 0; $i < $count; $i++){
             ?>
             <tr>
@@ -96,6 +95,9 @@ echo $itemNo;
        
 
         
+echo 'Total Price: RM '.$totalPrice;
+} else{
+    //File Upload Path 
 
-} 
+}
 }

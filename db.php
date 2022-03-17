@@ -22,6 +22,9 @@ if ($conn->query($sql) === TRUE) {
 }
 
 //Make connection to the created DB
+$conn = new mysqli($servername,$username,$password,"finaHealthCare");
+
+//Create user table 
 $sql = "CREATE TABLE IF NOT EXISTS user (
     userID VARCHAR(40) NOT NULL PRIMARY KEY,
     email VARCHAR(100) NOT NULL,
@@ -31,12 +34,27 @@ $sql = "CREATE TABLE IF NOT EXISTS user (
     )";
     
     if ($conn->query($sql) === TRUE) {
-         // Do nothing if table created successfully
+         // Do nothing if table created
     } else {
       echo "Error creating table: " . $conn->error;
     }
 
-
+// Create the inventoryItem table 
+$sql = "CREATE TABLE IF NOT EXISTS inventoryItem (
+    itemID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+    item_name VARCHAR(100) NOT NULL, 
+    price DOUBLE PRECISION(100,2) NOT NULL,
+    quantity INT(100) NOT NULL, 
+    s_status INT(40) NOT NULL,
+    userID VARCHAR(40) NOT NULL, 
+    FOREIGN KEY (userID) REFERENCES user(userID)
+  )";
+  
+  if ($conn->query($sql) === TRUE) {
+       // Do nothing if table created successfully
+  } else {
+    echo "Error creating table: " . $conn->error;
+  }
 
 
 ?>

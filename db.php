@@ -26,7 +26,16 @@ $sql = "CREATE TABLE IF NOT EXISTS user (
     userID VARCHAR(40) NOT NULL PRIMARY KEY,
     email VARCHAR(100) NOT NULL,
     UNIQUE (email),
-    "
+    password_hash VARCHAR(100) NOT NULL,
+    userRole INT(11) NOT NULL
+    )";
+    
+    if ($conn->query($sql) === TRUE) {
+         // Do nothing if table created successfully
+    } else {
+      echo "Error creating table: " . $conn->error;
+    }
+
 
 
 

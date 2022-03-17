@@ -2,7 +2,8 @@
 include("db.php");
 if (count($_POST) > 0) {
     $update = mysqli_query($conn, "UPDATE inventoryitem  SET item_name='" . $_POST['item_name'] . "',
-    price='" . $_POST['price'] . "', quantity='" . $_POST['quantity'] . "', s_status='" . $_POST['s_status'] . "' WHERE itemID='" . $_GET['itemID'] . "'");
+    price='" . $_POST['price'] . "', quantity='" . $_POST['quantity'] . "', s_status='" . $_POST['s_status'] . 
+    "' WHERE itemID='" . $_GET['itemID'] . "'");
     if ($update) {
         echo '<script>alert("Record Successfully edited")</script>';
     } else {
@@ -73,7 +74,14 @@ $row = mysqli_fetch_array($result);
                                         </tr>
                                         <tr>
                                             <th scope="row">Status: </th>
-                                            <td><input type="text" name="s_status" value="<?php echo $row['s_status']; ?>"></td>
+                                            
+                                            <td>
+                                                <select id="s_status" name="s_status">
+                                                    <option value="1" <?php if($row['s_status'] == 1) echo 'selected="selected"'; ?> >Available</option>
+                                                    <option value="0" <?php if($row['s_status'] == 0) echo 'selected="selected"'; ?> >Unavailable</option>
+                                                    <option value="2" <?php if($row['s_status'] == 2) echo 'selected="selected"'; ?> >On route</option>
+                                                </select>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row">User ID: </th>

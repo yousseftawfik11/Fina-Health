@@ -1,8 +1,13 @@
 <?php
 include("db.php");
+
+//To add a new item to database
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,11 +24,19 @@ include("db.php");
     <!--Font Awesome 4 CDN-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!--Alert Message-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+
     <title>Updates</title>
 </head>
+
 <body>
     <div class="navWrapper">
-        <div class="sideNav"><!--Side Navbar-->
+        <div class="sideNav">
+            <!--Side Navbar-->
             <ul>
                 <a class="navbar-brand" href="iCHome.php">FINA Health Care</a>
                 <br><br><br>
@@ -42,14 +55,11 @@ include("db.php");
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            Stock <br><br>
-                            <form action="pdf_gen.php" method="POST">
-                                <button type="submit" name="btn_pdf" class="btn btn-success">Generate PDF Report</button>
-                            </form>
+                            Stock
                         </div>
                         <div class="card-body">
                             <?php
-                                $itemID = mysqli_query($conn, "SELECT itemID, item_name, price, quantity, s_status, userID FROM inventoryitem");
+                            $itemID = mysqli_query($conn, "SELECT itemID, item_name, price, quantity, s_status, userID FROM inventoryitem");
                             ?>
                             <table id="editableTable" class="table">
                                 <thead>
@@ -60,42 +70,126 @@ include("db.php");
                                         <th>Quantity</th>
                                         <th>Status</th>
                                         <th>User ID</th>
-                                </tr>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                    <?php while( $exists = mysqli_fetch_assoc($itemID) ) { ?>
-                                    <tr class="text-center">
-                                    <td><?php echo $exists ['itemID']; ?></td>
-                                    <td><?php echo $exists ['item_name']; ?></td>
-                                    <td><?php echo $exists ['price']; ?></td>
-                                    <td><?php echo $exists ['quantity']; ?></td>
+                                    <?php while ($exists = mysqli_fetch_assoc($itemID)) { ?>
+                                        <tr class="text-center">
+                                            <td><?php echo $exists['itemID']; ?></td>
+                                            <td><?php echo $exists['item_name']; ?></td>
+                                            <td><?php echo $exists['price']; ?></td>
+                                            <td><?php echo $exists['quantity']; ?></td>
 
-                                    <?php
-                                    if ($exists ['s_status'] == 1){?>
-                                        <td><i class="fa fa-check" style="color: greenyellow;"></i></td>
-                                    <?php
-                                    }
-                                    else if ($exists ['s_status'] == 2){
-                                        ?>
-                                        <td><i class="fa fa-truck" style="color: orange;"></i></td>
-                                        <?php
-                                    }
-                                    else {?>
-                                        <td><i class="fa fa-times" style="color: red;"></i></td>
-                                    <?php
-                                    }
-                                    ?>
-                                    <td><?php echo $exists ['userID']; ?></td>
-                                    <td><a href="iCUpdate.php?itemID=<?php echo $exists["itemID"];?>">Update</a></td>
-                                    </tr>                            
+                                            <?php
+                                            if ($exists['s_status'] == 1) { ?>
+                                                <td><i class="fa fa-check" style="color: greenyellow;"></i></td>
+                                            <?php
+                                            } else if ($exists['s_status'] == 2) {
+                                            ?>
+                                                <td><i class="fa fa-truck" style="color: orange;"></i></td>
+                                            <?php
+                                            } else { ?>
+                                                <td><i class="fa fa-times" style="color: red;"></i></td>
+                                            <?php
+                                            }
+                                            ?>
+                                            <td><?php echo $exists['userID']; ?></td>
+                                            <td>
+                                                <a href="iCUpdate.php?itemID=<?php echo $exists["itemID"]; ?>">Update</a> <br>
+                                                <a href="iCDelete.php?itemID=<?php echo $exists["itemID"]; ?>">Delete</a>
+                                            </td>
+                                        </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
                         </div>
+                        <div class="card-footer" style="text-align: right;">
+                            <form action="pdf_gen.php" method="POST">
+                                <button type="submit" name="btn_pdf" class="btn btn-success">Generate PDF Report</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+            <br><br>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Add Item
+                        </div>
+
+                        <div class="card-body">
+                        <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
+                            <table id="editableTable" class="table">
+                                
+                                    <tbody class="text-center">
+                                        <tr>
+                                            <th scope="row">Item Name: </th>
+                                            <td><input type="text" name="item_name"></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Price: </th>
+                                            <td><input type="text" name="price"></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Quantity: </th>
+                                            <td><input type="text" name="quantity"></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Status: </th>
+
+                                            <td>
+                                                <select id="s_status" name="s_status">
+                                                    <option value="1">Available</option>
+                                                    <option value="0">Unavailable</option>
+                                                    <option value="2">On route</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="submit" name="addToDB">Add to Database</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                
+                            </table>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <br><br>
         </div>
     </div>
+    <?php
+        if(isset($_POST['addToDB'])){
+            $item_name=strtolower( mysqli_real_escape_string($conn,$_POST['item_name']));
+            $price=strtolower( mysqli_real_escape_string($conn,$_POST['price']));
+            $quantity=strtolower( mysqli_real_escape_string($conn,$_POST['quantity']));
+            $s_status=strtolower( mysqli_real_escape_string($conn,$_POST['s_status']));
+
+            $sqlQuery = "INSERT INTO inventoryitem(item_name, price, quantity, s_status, userID ) 
+                VALUES('$item_name','$price','$quantity', '$s_status', 100)";
+            if (mysqli_query($conn, $sqlQuery)){
+                echo '
+                    <script>
+                        Swal.fire(
+                            "Item Added Successfully",
+                            "Return back to Items Page",
+                            "success"
+                        ).then(function() {
+                            window.location = "iCItemUpdate.php";
+                        });
+                    </script>';
+            }
+            else {
+                echo mysqli_error($conn);
+            }
+        }
+    ?>
 </body>
+
 </html>

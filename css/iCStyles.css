@@ -1,0 +1,36 @@
+/*Style page for inventory controller*/
+
+/*inventory controller homepage*/
+/*side navbar*/
+.navWrapper {
+    margin: auto;
+    display: flex;
+    background-color: #EFFFFD;
+}
+
+.sideNav {
+    width: 200px;
+    height: 100vh;
+    background: #42C2FF;
+    border-radius: 0px 25px 25px 25px;
+    box-shadow: 10px 0 5px -2px #888;
+}
+
+.sideNav ul {
+    margin-top: 50px;
+}
+
+.sideNav ul li {
+    list-style: none;
+    text-align: left;
+}
+
+.sideNav ul li i {
+    margin: 20px;
+    font-size: 22px;
+    color: black;
+}
+
+.sideNav li:hover, li.active {
+    border-right: 3px solid black;
+}

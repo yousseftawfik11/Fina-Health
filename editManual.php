@@ -34,6 +34,7 @@ tr:nth-child(even) {
 <?php
 
 session_start();
+include 'scrubData.php';
 
 $fileData = $_SESSION['arrayManualEditData'];
 
@@ -46,6 +47,7 @@ for($i=0;$i<count($fileData);$i++){
 
 function showEditTable($batchID, $deliveyDate, $itemNo, $itemName, $quantity, $price, $totalPrice)
 {
+    
     $_SESSION['batchID'] = $batchID;
     $_SESSION['delivery_date'] = $deliveyDate;
     $_SESSION['totalPrice'] = $totalPrice;
@@ -60,26 +62,32 @@ function showEditTable($batchID, $deliveyDate, $itemNo, $itemName, $quantity, $p
     <table id="editable_table" class="table table-bordered table-striped">
   
     <?php
-    echo "<tr><th>Batch Id: ".$batchID  . "</th>";
+    echo "<tr><th>Batch Id: ".$batchID;
+    $result = scrubBatchID($batchID);
+    if($result == 1){
+        $verify = 1;
+        echo "&ensp;<i class='fa fa-times' style='color: red;'></i></th>";
+    };
 
-
-    echo "<th>Delivery Date: ".$deliveyDate . "&ensp;</th>";
-   
+    echo "<th>Delivery Date: ".$deliveyDate;
+    $result = scrubDeliveryDate($deliveyDate);
+            if($result == 1){
+                $verify = 1;
+                echo "&ensp;<i class='fa fa-times' style='color: red;'></i></th>";
+            };
 
     
-    echo "<th>Total Price: RM" .$totalPrice . "</th>";
+    echo "<th>Total Price: RM" .$totalPrice;
+    $result = scrubNumericData($totalPrice);
+            if($result == 1){
+                $verify = 1;
+                echo "&ensp;<i class='fa fa-times' style='color: red;'></i></th>";
+            };
 ?>
 
     <th>
 </th>
-<th>
-    <form action="formUpdate.php" method="post">
-                   <div class="col-md-9">
-                <input type="submit" name="editHeader" value="EDIT" class="btn" />
-                 </div>
-
-                 </form>
-    </th></tr>
+</tr>
   
     
      <tr>
@@ -87,7 +95,7 @@ function showEditTable($batchID, $deliveyDate, $itemNo, $itemName, $quantity, $p
      <th>Item Name</th>
      <th>Quantity</th>
      <th>Price</th>
-     <th></th>
+     
 
 </tr>
      
@@ -100,52 +108,73 @@ function showEditTable($batchID, $deliveyDate, $itemNo, $itemName, $quantity, $p
             <td><?php
             echo $itemNo[$i];
 
+            $result = scrubNumericData($itemNo[$i]);
+            if($result == 1){
+                $verify = 1;
+                echo "&ensp;<i class='fa fa-times' style='color: red;'></i>";
+            }
+
+
             ?></td>
 
             <td><?php
              echo$itemName[$i];
 
-             
-            
+             $result = scrubStringData($itemName[$i]);
+            if($result == 1){
+                $verify = 1;
+                echo "&ensp;<i class='fa fa-times' style='color: red;'></i>";
+            }
+
              ?></td>
              
             <td><?php
             echo $quantity[$i];
             
-           
+            $result = scrubNumericData($quantity[$i]);
+            if($result == 1){
+                $verify = 1;
+                echo "&ensp;<i class='fa fa-times' style='color: red;'></i>";
+            }
+
             ?>
             </td>
             <td><?php
             echo$price[$i];
 
+            $result = scrubNumericData($price[$i]);
+            if($result == 1){
+                $verify = 1;
+                echo "&ensp;<i class='fa fa-times' style='color: red;'></i>";
+            }
+
             ?>
-                 <td>
-
-                 <form action="formUpdate.php" method="post">
-                   <div class="col-md-9">
-                <input type="submit" name="editItem" value="EDIT" class="btn" />
-                 </div>
-
-                 </form>
-                
-                 </td>
+               
     
     
     <?php
                
-           
+              
       }
+    
 
      ?></td>
 
 </tr>
   
 
-<!-- all i added -->
 <tbody>
 
     </table>
-    
+    <form action="formUpdate.php" method="post">
+                   <div class="col-md-9">
+                <input type="submit" name="editBatch" value="EDIT" class="btn" />
+                 </div>
+
+                 </form>
+
+
+
     <br>
    
      <?php

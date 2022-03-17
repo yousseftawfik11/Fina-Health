@@ -22,16 +22,12 @@
 
 <?php
 session_start();
+include 'scrubData.php';
 
-if (isset($_POST["editHeader"])) {
+if (isset($_POST["editBatch"])) {
     $batchID = $_SESSION['batchID'];
     $deliveyDate = $_SESSION['delivery_date'];
     $totalPrice = $_SESSION['totalPrice'];
-  
-    echo $batchID ;
-  
-}
-else if(isset($_POST["editItem"])) {
     $itemNo = $_SESSION['itemNo'];
     $itemName = $_SESSION['itemName'];
     $quantity = $_SESSION['quantity'];
@@ -44,33 +40,149 @@ else if(isset($_POST["editItem"])) {
             <div class="row">
                 <div class="col">
                     <br><br>
-                    <form name="itemForm" method="post" action="">
+                    <form name="editManual" method="post" action="">
                         <div class="card">
                             <div class="card-header">
-                                Edit Item
+                                Edit Batch Header
                             </div>
                             <div class="card-body">
                                 <table id="editableTable" class="table">                                
                                     <tbody class="text-center">
                                         <tr>
-                                            <th scope="row">Item ID: </th>
-                                            <td><input type="text" name="itemID" value="<?php echo $itemNo; ?>" ></td>
+                                            <th scope="row">Batch ID: </th>
+                                            <td><input type="text" name="batch_id" value="<?php echo $batchID; ?>" >
+
+                                            
+                                            <?php
+
+                                            $result = scrubBatchID($batchID);
+                                            if($result == 1){
+                                                $verify = 1;
+                                                echo "&ensp;<i class='fa fa-times' style='color: red;'></i></td>";
+                                            };
+
+                                            ?>
+
                                         </tr>
                                         <tr>
-                                            <th scope="row">Item Name: </th>
-                                            <td><input type="text" name="item_name" value="<?php echo $itemName; ?>"></td>
+                                            <th scope="row">Delivery Date: </th>
+                                            <td><input type="text" name="delivery_date" value="<?php echo $deliveyDate; ?>">
+
+                                            <?php
+
+                                            $result = scrubDeliveryDate($deliveyDate);
+                                            if($result == 1){
+                                                $verify = 1;
+                                                echo "&ensp;<i class='fa fa-times' style='color: red;'></i></td>";
+                                            };
+
+                                            ?>
+
                                         </tr>
                                         <tr>
-                                            <th scope="row">Price: </th>
-                                            <td><input type="text" name="price" value="<?php echo $quantity; ?>"></td>
+                                            <th scope="row">Total Price: </th>
+                                            <td><input type="text" name="price" value="<?php echo $totalPrice; ?>">
+
+                                            <?php
+
+                                            $result = scrubNumericData($totalPrice);
+                                            if($result == 1){
+                                                $verify = 1;
+                                                echo "&ensp;<i class='fa fa-times' style='color: red;'></i></td>";
+                                            };
+
+                                            ?>
+
+                                        </tr>
+                                        <?php
+
+
+   for($i =0; $i < count($itemNo); $i++)
+   {
+       ?>
+        <tr>
+                                        <th > </th>
+                                            <td></td>
+                                        </tr>
+        <tr>
+                                            <th scope="row">Item <?php echo $i+1; ?> ID: </th>
+                                            <td><input type="text" name="itemID" value="<?php echo $itemNo[$i]; ?>" >
+
+                                            <?php
+
+                                               $result = scrubNumericData($itemNo[$i]);
+                                               if($result == 1){
+                                                $verify = 1;
+                                                echo "&ensp;<i class='fa fa-times' style='color: red;'></i></td>";
+                                            };
+                                            ?>
+
+
+
                                         </tr>
                                         <tr>
-                                            <th scope="row">Quantity: </th>
-                                            <td><input type="text" name="quantity" value="<?php echo $price; ?>"></td>
+                                            <th scope="row">Item <?php echo $i+1; ?> Name: </th>
+                                            <td><input type="text" name="item_name" value="<?php echo $itemName[$i]; ?>">
+                                        
+
+                                        <?php
+                                            $result = scrubStringData($itemName[$i]);
+                                            if($result == 1){
+                                             $verify = 1;
+                                             echo "&ensp;<i class='fa fa-times' style='color: red;'></i></td>";
+                                            };
+                                            
+                                            
+                                            ?>
+                                            </tr>
+                                        <tr>
+                                            <th scope="row">Item <?php echo $i+1; ?> Price: </th>
+                                            <td><input type="text" name="price" value="<?php echo $price[$i]; ?>">
+
+                                            <?php
+                                            $result = scrubNumericData($price[$i]);
+                                            if($result == 1){
+                                             $verify = 1;
+                                             echo "&ensp;<i class='fa fa-times' style='color: red;'></i></td>";
+                                            };
+                                            
+                                            
+                                            ?>
+
+
+
                                         </tr>
+                                        <tr>
+                                            <th scope="row">Item <?php echo $i+1; ?> Quantity: </th>
+                                            <td><input type="text" name="quantity" value="<?php echo $quantity[$i]; ?>">
+
+                                            <?php
+                                            $result = scrubNumericData($quantity[$i]);
+                                            if($result == 1){
+                                             $verify = 1;
+                                             echo "&ensp;<i class='fa fa-times' style='color: red;'></i></td>";
+                                            };
+                                            
+                                            
+                                            ?>
+
+
+
+                                        </tr>
+                                        <tr>
+                                        <th > </th>
+                                            <td></td>
+                                        </tr>
+
+     <?php
+   }
+
+
+
+  ?>
                                         <tr>
                                             <th scope="row"></th>
-                                            <td><input type="submit" name="saveItem" value="Submit" class="button"></td>
+                                            <td><input type="submit" name="saveHeader" value="Submit" class="button"></td>
                                         </tr>
                                     </tbody>
                                 </table>

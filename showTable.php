@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,12 +32,26 @@ tr:nth-child(even) {
 <tbody>
     <?php 
     include 'vendor/autoload.php'; 
-if($_FILES['file']['name']){
-    $arrFileName=explode('.',$_FILES['file']['name']);
+$arrayFile[0]='10.xlsx';
+$arrayFile[1]='pdfFormat.pdf';
+
+
+for($i=0;$i<count($arrayFile);$i++){
+    arrayLoop($arrayFile[$i]);
+    ?>
+    <tr>
+        <td>New File </td>
+</tr>
+    <?php
+
+}
+function arrayLoop($arrayFile){
+$arrFileName=explode('.',$arrayFile);
     if ($arrFileName[1] == 'xlsx') {
+        echo "EXCEl";
 
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        $spreadsheet = $reader->load($_FILES['file']['name']);
+        $spreadsheet = $reader->load($arrayFile);
         $worksheet = $spreadsheet->setActiveSheetIndex(0);
         $highestRow = $worksheet->getHighestRow();
         $highestCol = $worksheet->getHighestColumn();
@@ -57,8 +70,7 @@ if($_FILES['file']['name']){
         $length = count($array);
 
         $totalPrice = $array[$length-1][1];
-       
-
+    
         $a =0;
 
          $length = count($array)-2;
@@ -90,14 +102,20 @@ if($_FILES['file']['name']){
         </tr>
                 <?php
         }
-       
+        ?>
+       <tr>
+       <td><?php echo "Total Price: RM ".$totalPrice;?>
+      
+       </td>
 
+       </tr>
+<?php
         
 
 } else{
-  
+  echo "PDF";
     // File upload path 
-    $fileName = basename($_FILES["file"]["name"]); 
+    $fileName = basename($arrayFile); 
     $fileType = pathinfo($fileName, PATHINFO_EXTENSION); 
      
     // Allow certain file formats 
@@ -109,7 +127,7 @@ if($_FILES['file']['name']){
         $parser = new \Smalot\PdfParser\Parser(); 
          
         // Source PDF file to extract text 
-        $file = $_FILES["file"]["tmp_name"]; 
+        $file = $arrayFile; 
          
         // Parse pdf file using Parser library 
         $pdf = $parser->parseFile($file); 
@@ -163,8 +181,10 @@ $_SESSION['quantity'] = $quantity;
 $_SESSION['totalPrice'] = $totalPrice;
 $_SESSION['delivery_date'] = $deliveyDate;
 $count=Count($items);
+
 for($i = 0; $i < $count; $i++){
     ?>
+
     <tr>
         <td><?php echo $itemNo[$i]; ?></td>
         <td><?php echo$itemName[$i];?></td>
@@ -173,8 +193,14 @@ for($i = 0; $i < $count; $i++){
 </tr>
         <?php
 }
+?>
+<tr>
+<td><?php echo $totalPrice;?>
 
+</td>
 
+</tr>
+<?php
 }
 }
 
@@ -182,21 +208,15 @@ function splitNewLine($text) {
     $code=preg_replace('/\n$/','',preg_replace('/^\n/','',preg_replace('/[\r\n]+/',"\n",$text)));
     return explode("\n",$code);
 }
+
+
 ?>
 <tbody>
     </table>
     </div>
 </body>
 </html>
-<?php
-if($arrFileName[1] == 'xlsx'){
-    echo 'Total Price: RM '.$totalPrice;
-}else{
-    echo $totalPrice;
-}
 
-
-// echo $totalPrice;?>
 <br>
 <form action="uploadData.php" method="post" enctype="multipart/form-data">
  <div class="col-md-9">

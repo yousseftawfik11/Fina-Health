@@ -395,7 +395,5 @@ function splitNewLine($text) {
 
 <br>
  <div class="col-md-9">
-           <a href="editManual.php" class="btn">Edit Manual</a>
+ <button onclick="window.location.href='editManual.php'">Edit Manual</button>
        </div>
-
-</form>

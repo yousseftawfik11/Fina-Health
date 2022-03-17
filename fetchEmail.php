@@ -1,97 +1,129 @@
-<?php
 
-/* connect to gmail */
-$hostname = '{imap.gmail.com:993/imap/ssl}INBOX';
-$username = 'finahealthcare123@gmail.com';
-$password = 'T1e2s3t4';
+<!-- Bootstrap -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+<!-- dataTables -->
+<link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+<style>
+body {
+	padding: 20px 10px 20px 10px
+}
+</style>
 
-/* try to connect */
-$inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Gmail: ' . imap_last_error());
+<div class="container">
+	<div class="row">
+		<div class="col-md-12"> 
+			<hr>
 
-/* grab emails */
-$emails = imap_search($inbox, 'AlL');
+			<table id="myTable" class="display" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Subject</th>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Date</th>
+					</tr>
+				</thead>
+				<tbody id="inbox">
 
+				</tbody>
+			</table>
+				
+		</div>					
+	</div>					
+</div>
 
+<!-- Modal message -->		
+<div id="addModal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+         <h4 class="modal-title">Message</h4>
+       </div>
+       <div class="modal-body" id="message">
+         
+       </div>
+     </div>
+   </div>
+</div>
 
-/* if emails are returned, cycle through each... */
-if($emails) {
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- Bootstrap -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+<!-- dataTables -->
+<script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<!-- loading-overlay -->
+<script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
+<script>		
+$(function() {
 
-  /* begin output var */
-  $output = '';
+	var json;
+	
+	$.LoadingOverlay("show");
 
-  /* put the newest emails on top */
-  rsort($emails);
-
-
-
-
-    foreach($emails as $email_number) {
-
-    /* get information specific to this email */
-    $overview = imap_fetch_overview($inbox,$email_number,0);
-    $message = imap_fetchbody($inbox,$email_number,2);
-    $structure = imap_fetchstructure($inbox,$email_number);
-
-
-    //pre($overview);
-
-
-     $attachments = array();
-       if(isset($structure->parts) && count($structure->parts)) {
-         for($i = 0; $i < count($structure->parts); $i++) {
-           $attachments[$i] = array(
-              'is_attachment' => false,
-              'filename' => '',
-              'name' => '',
-              'attachment' => '');
-
-           if($structure->parts[$i]->ifdparameters) {
-             foreach($structure->parts[$i]->dparameters as $object) {
-               if(strtolower($object->attribute) == 'filename') {
-                 $attachments[$i]['is_attachment'] = true;
-                 $attachments[$i]['filename'] = $object->value;
-               }
-             }
-           }
-
-           if($structure->parts[$i]->ifparameters) {
-             foreach($structure->parts[$i]->parameters as $object) {
-               if(strtolower($object->attribute) == 'name') {
-                 $attachments[$i]['is_attachment'] = true;
-                 $attachments[$i]['name'] = $object->value;
-               }
-             }
-           }
-
-           if($attachments[$i]['is_attachment']) {
-             $attachments[$i]['attachment'] = imap_fetchbody($inbox, $email_number, $i+1);
-             if($structure->parts[$i]->encoding == 3) { // 3 = BASE64
-               $attachments[$i]['attachment'] = base64_decode($attachments[$i]['attachment']);
-             }
-             elseif($structure->parts[$i]->encoding == 4) { // 4 = QUOTED-PRINTABLE
-               $attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
-             }
-           }             
-         } // for($i = 0; $i < count($structure->parts); $i++)
-       } // if(isset($structure->parts) && count($structure->parts))
-
-
-    if(count($attachments)!=0){
-        foreach($attachments as $at){
-            if($at['is_attachment']==1){
-                file_put_contents($at['filename'], $at['new_attachment']);
-            }
-        }
-    }
-
-  }
-
- // echo $output;
-} 
-
-/* close the connection */
-imap_close($inbox);
-
-
-
-?>
+	$.ajax({
+		type: "POST",
+		url: "json.php",
+		data: {
+			inbox: ""
+		},
+        dataType: 'json'
+	}).done(function(d) {
+		if(d.status === "success"){
+			var tbody = "";
+			json = d.data;
+			$.each(json, function(i, a) {
+				tbody += '<tr><td>' + (i + 1) + '</td>';
+				tbody += '<td><a href="#" data-id="' + i + '" class="view" data-toggle="modal" data-target="#addModal">' + a.subject.substring(0, 20) + '</a></td>';
+				tbody += '<td>' + (a.from.name === "" ? "[empty]" : a.from.name) + '</td>';
+				tbody += '<td><a href="mailto:' + a.from.address + '?subject=Re:' + a.subject + '">' + a.from.address + '</a></td>';
+				tbody += '<td>' + a.date + '</td></tr>';
+			});
+			$('#inbox').html(tbody);
+			$('#myTable').DataTable();
+			$.LoadingOverlay("hide");
+		}else{
+			alert(d.message);
+		}
+	});
+	$('body').on('click', '.view', function () {
+		var id = $(this).data('id'); 
+		var message = json[id].message;
+		var attachments = json[id].attachments;
+		var attachment = '';
+		if(attachments.length > 0){
+			attachment += "<hr>Attachments:";
+			$.each(attachments, function(i, a) {
+				var file = json[id].uid + ',' + a.part + ',' + a.file + ',' + a.encoding;
+				attachment += '<br><a href="#" class="file" data-file="' + file + '">' + a.file + '</a>';
+			});
+		}
+		$('#message').html(message + attachment); 
+	});
+	$('body').on('click', '.file', function () {
+		$.LoadingOverlay("show");
+		var file = $(this).data('file').split(",");
+		$.ajax({
+			type: "POST",
+			url: "json.php",
+			data: {
+				uid: file[0],
+				part: file[1],
+				file: file[2],
+				encoding: file[3]
+			},
+			dataType: 'json'
+		}).done(function(d) {
+			if(d.status === "success"){
+				$.LoadingOverlay("hide");
+				window.open(d.path, '_blank');
+			}else{
+				alert(d.message);
+			}
+		});
+	});
+			
+});
+</script>

@@ -59,9 +59,25 @@ if(isset($_POST["submit2"])){
 	$EmailQuery="SELECT email from user WHERE email='$email'";
 	if($result= mysqli_query($conn,$EmailQuery)){
 	  if(mysqli_num_rows($result)>0){
-		echo "email already exists";
-
-	  }else{
+		echo"<script>
+		Swal.fire({
+			icon: 'error',
+			title: 'Try Again',
+			text: 'This Email already exists...',
+			confirmButtonColor:'#f27474',
+			confirmButtonText: 'OK'})
+		</script>";
+	  }elseif($pass != $_POST['Rpass']){
+		echo"<script>
+		Swal.fire({
+			icon: 'error',
+			title: 'Try Again',
+			text: 'Password and confrim password does not match...',
+			confirmButtonColor:'#f27474',
+			confirmButtonText: 'OK'})
+		</script>";
+	  }
+	  else{
 		$query="INSERT INTO user(u_name,email,password_hash,userRole) 
         VALUES('$name','$email','$passHash','$role')";
         mysqli_query($conn,$query);
@@ -81,6 +97,12 @@ if(isset($_POST["submit2"])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/styles.css">
+
+	    <!-- alert box libraries -->
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
 
 </head>
 <body style="background-color: #EFFFFD;">
@@ -125,12 +147,12 @@ if(isset($_POST["submit2"])){
 						</div>
 						<div class="group">
 							
-							<label for="role" class="label">Role</label></br>
+							<!-- <label for="role" class="label">Role</label></br>
 							<div style=" margin-left: 62px;">
 							<input id="role1" name="role" type="radio" value="1">Business Partner<br>
 							<input id="role2" name="role" type="radio" value="2">Data Analyst<br>
 							<input id="role3" name="role" type="radio" value="3">Inventory Manager<br>
-							</div>
+							</div> -->
 						</div>
 						<div class="group">
 							<input type="submit" name="submit2" class="button" value="Sign Up">
@@ -139,5 +161,10 @@ if(isset($_POST["submit2"])){
 </form>
 
 </div>
+
+
+
+
+
 </body>
 </html>

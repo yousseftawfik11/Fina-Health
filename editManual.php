@@ -9,7 +9,7 @@
     <style> .left {margin-left:43%;text-align:left;margin-top:2%;margin-bottom:2%} </style>
 
     <!--Font Awesome 4 CDN-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 <style>
     table {
   font-family: arial, sans-serif;
@@ -167,10 +167,20 @@ function showEditTable($batchID, $deliveyDate, $itemNo, $itemName, $quantity, $p
      ?></td>
 </tr>
 
+<!-- all i added -->
+<tbody>
+    </table>
+    <br>
+    <div class="col-md-9">
+ <button onclick="clickMe()">Upload DB</button>
+       </div>
      <?php
 }
 
-
+function dBupload()
+{
+    echo " uploaddd" ; 
+}
 
 ?>
 
@@ -193,4 +203,10 @@ $(document).ready(function(){
       }
      });
 });  
+
+function clickMe(){
+var result ="<?php php_func(); ?>"
+document.write(result);
+}
+
  </script>

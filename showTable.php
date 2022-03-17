@@ -47,6 +47,13 @@ for($i=0;$i<count($arrayFile);$i++){
 
 }
 
+function uploadData($conn,$batchID,$itemList, $quantityList,$delivery_Date,$total_price)
+{
+    $mainQuery = "INSERT INTO  batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$delivery_Date',total_price='$total_price'";
+    $result1 = $conn->query($mainQuery) or die("Error in main Query".$conn->error);
+    return $result1;
+}
+
 
 function arrayLoop($arrayFile){
 $arrFileName=explode('.',$arrayFile);
@@ -169,15 +176,20 @@ if ($boolBID == 1 || $boolDd == 1 || $verify == 1 || $boolTp == 1)
 }
 else
 {
-      include 'db.php' ;
+   include 'db.php' ;
+
     $itemList=implode(",",$itemNo);
     $quantityList=implode(",",$quantity);
-
-    $insert = "INSERT INTO batch (batchID, itemList, quantityList, delivery_Date, total_price) 
-    VALUES('$batchID', '$itemList', '$quantityList', $deliveyDate, '$totalPrice')";
-
-    $query = mysqli_query($conn, $insert);
-  //  $result1 = $conn->query($insert) or die("Error in main Query".$conn->error);
+    $tp = floatval($totalPrice);
+ 
+    $SheetUpload = uploadData($conn,$batchID,$itemList, $quantityList,$deliveyDate,$tp);
+    if ($SheetUpload){
+           
+        echo "uploaded successfuly";
+       
+       }else {
+           echo "no";
+       }
 
     echo "yayyy " . $arrayFile . "<br>";
 }

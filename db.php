@@ -170,25 +170,7 @@ $sql = "CREATE TABLE IF NOT EXISTS report (
   }
   
 
-  function uploadData($conn,$batchID,$itemNo, $quantity,$delivery_Date,$total_price)
-  {
-      $query = "SELECT * FROM batch WHERE batchID = '$batchID'";
-      $result = $conn->query($query);
-      if($result->num_rows == 0){
 
-        $itemList=implode(",",$itemNo);
-        $quantityList=implode(",",$quantity);
-        $tp = floatval($total_price);
-    
-        
-        $mainQuery = "INSERT INTO batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$delivery_Date',total_price='$tp'";
-        $result1 = $conn->query($mainQuery) or die("Error in main Query".$conn->error);
-        return $result1;
-
-      }else{
-   return false;
-  }
-
-  }
+  
  
 ?>

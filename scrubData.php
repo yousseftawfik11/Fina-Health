@@ -5,9 +5,9 @@ function scrubBatchID($bID)
     $regex = '/^[A-Z]{2}[0-9]{3}$/';
 
     if(preg_match($regex , $bID))
-       return true;
+       return 0;
     else 
-       return false;
+       return 1;
 
 }
 
@@ -20,9 +20,9 @@ function scrubDeliveryDate($date)
     $year = $d[2];
 
     if(checkdate($month, $day, $year))
-        return true;
+        return 0;
     else
-        return false;
+        return 1;
 }
 
 function scrubNumericData($num)
@@ -39,11 +39,11 @@ function scrubNumericData($num)
     } 
     else if(empty($num))
     {
-            return 0 ;
+            return 1;
     }
     else 
     {
-            return -1;
+            return 0;
     }
 }
 
@@ -60,7 +60,7 @@ function scrubStringData($str)
     }
     else 
     {
-        return null;
+        return 0;
     }
 }
 

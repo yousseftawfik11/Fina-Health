@@ -40,6 +40,7 @@
 
     
 
+    
 
 for($i=0;$i<count($arrayFile);$i++){
     arrayLoop($arrayFile[$i]);
@@ -53,6 +54,8 @@ $arrFileName=explode('.',$arrayFile);
 
     if ($arrFileName[1] == 'xlsx') {
         echo "EXCEl";
+
+        $verify = 0;
 
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = $reader->load($arrayFile);
@@ -95,62 +98,88 @@ $arrFileName=explode('.',$arrayFile);
         echo $deliveyDate;
         echo "&ensp;<b>" .$boolDd = scrubDeliveryDate($deliveyDate). "</b>";
   
-        for($i = 0; $i < count($itemNo); $i++ )
+        for($i = 0; $i < count($itemNo); $i++)
         {
             echo "</br>";
             echo $itemNo[$i];
-            echo "&ensp;<b>" . $boolIno[$i] = scrubNumericData($itemNo[$i]). "</b>";
+
+            $result = scrubNumericData($itemNo[$i]);
+
+            if($result == 1){
+                $verify = 1;
+            }else if($result == 0){
+
+            }else $itemNo[$i] =$result;
 
             echo "<br>";
             echo $itemName[$i];
-            echo "&ensp;<b>" . $boolIname[$i] = scrubStringData($itemName[$i]). "</b>";
+
+            $result =  scrubStringData($itemName[$i]). "</b>";
+
+            if($result == 1){
+                $verify = 1;
+            }else if($result == 0){
+
+            }else $itemName[$i] =$result;
 
             echo "<br>";
             echo $quantity[$i];
-            echo "&ensp;<b>" . $boolIq[$i] = scrubNumericData($quantity[$i]). "</b>";
+
+            $result = scrubNumericData($quantity[$i]). "</b>";
+
+            if($result == 1){
+                $verify = 1;
+            }else if($result == 0){
+
+            }else $quantity[$i] =$result;
 
             echo "<br>";
             echo $price[$i];
-            echo "&ensp;<b>" . $boolP[$i] = scrubNumericData($price[$i]). "</b>";
+
+            $result =  scrubNumericData($price[$i]). "</b>";
+
+            if($result == 1){
+                $verify = 1;
+            }else if($result == 0){
+
+            }else $price[$i] =$result;
+        
         }
 
+     
         echo "<br>";
         echo $totalPrice;
         echo "&ensp;<b>" . $boolTp = scrubNumericData($totalPrice). "</b>";
-
-        $item_verify;
-        for($i = 0; $i < count($itemNo); $i++ )
-        {
-            if( $boolIno != 1 || $boolIname != 1 || $boolIq != 1 || $boolP != 1)
-            {
-                $item_verify = 0;
-            }
-            else
-            {
-                $item_verify = 1;
-                break;
-            }
+        echo "<br>";
 
 
-        }
 
-if ($boolBID != 1 && $boolDd != 1 && $item_verify != 1 && $boolTp != 1)
+    
+
+
+        
+
+        
+if ($boolBID == 1 || $boolDd == 1 || $verify == 1 || $boolTp == 1)
 {
-    include 'db.php' ;
+
+    echo "manual edit". $arrayFile . "<br>";
+  
+
+}
+else
+{
+      include 'db.php' ;
     $itemList=implode(",",$itemNo);
     $quantityList=implode(",",$quantity);
 
     $insert = "INSERT INTO batch (batchID, itemList, quantityList, delivery_Date, total_price) 
     VALUES('$batchID', '$itemList', '$quantityList', $deliveyDate, '$totalPrice')";
-    
+
     $query = mysqli_query($conn, $insert);
   //  $result1 = $conn->query($insert) or die("Error in main Query".$conn->error);
-  
+
     echo "yayyy " . $arrayFile . "<br>";
-}
-else
-{
-    echo "manual edit". $arrayFile . "<br>";
 }
 
     }

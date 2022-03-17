@@ -12,17 +12,17 @@ require 'PHPMailer/src/SMTP.php';
 
 
 
+function sendStockReport(){
 
 //Create an instance; passing `true` enables exceptions
 $mail = new PHPMailer(true);
 
-
 try {
     $mail->isSMTP();                                            //Send using SMTP
-    $mail->Host       = 'tornadoteam.website';                     //Set the SMTP server to send through
+    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'announcements@tornadoteam.website';                     //SMTP username
-    $mail->Password   = 'Ymtk_Ymtk11';                               //SMTP password
+    $mail->Username   = 'finahealthcare123@gmail.com';                     //SMTP username
+    $mail->Password   = 'T1e2s3t4';                               //SMTP password
    // $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
     $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
@@ -36,9 +36,9 @@ try {
     // $mail->addBCC('bcc@example.com');
 
     //Attachments
-    $uploaddri='attachments/';
-    $Fname='10.pdf';
-    $mail->addAttachment($uploaddri,$Fname);         //Add attachments
+    $uploaddri='weeklyReports/';
+    $Fname='weeklyReport.pdf';
+    $mail->addAttachment($uploaddri.$Fname);         //Add attachments
     // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
 
     //Content
@@ -48,10 +48,49 @@ try {
     //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
-    echo 'Message has been sent';
+    
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
 
+}
+function businessSend($Fname){
+
+    //Create an instance; passing `true` enables exceptions
+    $mail = new PHPMailer(true);
+    
+    try {
+        $mail->isSMTP();                                            //Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+        $mail->Username   = 'finahealthcare123@gmail.com';                     //SMTP username
+        $mail->Password   = 'T1e2s3t4';                               //SMTP password
+       // $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+        $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    
+        //Recipients
+        $mail->setFrom('announcements@tornadoteam.website', 'Business Report');
+    
+            $mail->addAddress('finahealthcare123@gmail.com', 'Business Report');     //Add a recipient
+    
+        
+        // $mail->addReplyTo('info@example.com', 'Information');
+        // $mail->addBCC('bcc@example.com');
+        $uploaddri='BusinessDocsOut/';
+        //Attachments
+        $mail->addAttachment($uploaddri.$Fname,);         //Add attachments
+        // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+    
+        //Content
+        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->Subject = 'Supply Report';
+        $mail->Body    = 'Medical Supplies Report';
+        //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    
+        $mail->send();
+        
+    } catch (Exception $e) {
+    }
+    
+    }
 
 ?>

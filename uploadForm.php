@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html>
 
@@ -11,7 +15,7 @@
            <div class ="form-group">
                <input align type  ="file" name="file" id="file" class="form-control">
            </div>
-e
+
        </div>
        <div class="col-md-9">
            <input type="submit" name="uploadBtn" id="uploadBtn" value="Upload" class="btn btn-success" />

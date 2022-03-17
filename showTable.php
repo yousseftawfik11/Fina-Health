@@ -1,26 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-    table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
 <body>
 <h3 align="center">Item Table</h3>
    <br />
@@ -35,12 +18,28 @@ tr:nth-child(even) {
 <tbody>
     <?php 
     include 'vendor/autoload.php'; 
-if($_FILES['file']['name']){
-    $arrFileName=explode('.',$_FILES['file']['name']);
+    include 'scrubData.php'; 
+$arrayFile[0]='10.xlsx';
+$arrayFile[1]='pdfFormat.pdf';
+
+
+for($i=0;$i<count($arrayFile);$i++){
+    arrayLoop($arrayFile[$i]);
+    ?>
+    
+    <tr>
+        <td>New File </td>
+</tr>
+    <?php
+
+}
+function arrayLoop($arrayFile){
+$arrFileName=explode('.',$arrayFile);
     if ($arrFileName[1] == 'xlsx') {
+        echo "EXCEl";
 
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        $spreadsheet = $reader->load($_FILES['file']['name']);
+        $spreadsheet = $reader->load($arrayFile);
         $worksheet = $spreadsheet->setActiveSheetIndex(0);
         $highestRow = $worksheet->getHighestRow();
         $highestCol = $worksheet->getHighestColumn();
@@ -50,56 +49,139 @@ if($_FILES['file']['name']){
 
         $batchID = $array[0][1];
         $deliveyDate = $array[1][1];
-
         echo "<br>";
         echo "Batch Id: ".$batchID  . "&ensp;";
+        $boolBatchId=scrubBatchID($batchID);
+        echo $boolBatchId;
+        echo "</br>";
+        echo $deliveyDate;
+
+        $boolDeliveryDate=scrubDeliveryDate($deliveyDate);
+        echo "Boolean".$boolDeliveryDate;
+      
+        $length = count($array)-2;
+$counter=0;
         echo "<br>";
-        echo "Delivery Date: ".$deliveyDate  . "&ensp;";
-     
-        $length = count($array);
+   
+       for($i = 4; $i < $length; $i++ ){
+       $itemNo[$counter] = $array[$i][0];
+       $itemName[$counter] = $array[$i][1];
+       $quantity[$counter] = $array[$i][2];
+       $price[$counter] = $array[$i][3];
+       $counter++;
+       }
+      
+$totalPrice = $array[$length-1][1];
+    $arrayNewName=array();
+    $arrayNewNo=array();
+    $flagItemName=1;
+    $flagItemNo=1;
+         for($i = 0; $i < count($itemNo); $i++){
 
-        $totalPrice = $array[$length-1][1];
-       
+            //number
+           $resultItemNo = scrubNumericData($itemNo[$i]);
+   
+           if($resultItemNo==0)  {
+               $flagItemNo=0;
+           }else if($resultItemNo==-1){
+            
+            array_push($arrayNewNo,$itemNo[$i]);
+           }else {
+            array_push($arrayNewNo,$resultItemNo);
+           }
 
-        $a =0;
 
-         $length = count($array)-2;
+           //name
+             
+             $resultItemName = scrubStringData($itemName[$i]);
+            
+            
+             if($resultItemName==null){
+                array_push($arrayNewName,$itemName[$i]);
 
-         echo "<br>";
-    
-        for($i = 4; $i < $length; $i++ ){
-        $itemNo[$a] = $array[$i][0];
-        $itemName[$a] = $array[$i][1];
-        $quantity[$a] = $array[$i][2];
-        $price[$a] = $array[$i][3];
-        $a++;
+             }else if($resultItemName==1){
+                 $flagItemName=0;
+        
+             }
+        
+             else {
+                array_push($arrayNewName,$resultItemName);
+             
+             }
+
+         
+                 //quantity
+             
+             $resultItemQuantity = scrubStringData($quantity[$i]);
+            
+            
+             if($resultItemName==null){
+                array_push($arrayNewName,$itemName[$i]);
+
+             }else if($resultItemName==1){
+                 $flagItemName=0;
+        
+             }
+        
+             else {
+                array_push($arrayNewName,$resultItemName);
+             
+             }
+                 
+            
+           
+                 
+                // $result = scrubQuantity($price[$i]);
+                //  if($result == null)
+                //  {
+                //     echo "<i class='fa fa-check' style='color: greenyellow;'></i><br>";
+                //  }else if ($result == 1)
+                //  {
+                //     echo "<i class='fa fa-times' style='color: red;'></i>";
+
+                //  }else
+                //  {
+                //     $price[$i] = $result;
+                //           echo " = " . $price[$i]. "&ensp;";
+                //      echo "<i class='fa fa-check' style='color: green;'></i><br>";
+                    
+                //  }
+
+              
+  
         }
-        $_SESSION['batchID'] = $batchID;
-        $_SESSION['itemNo'] = $itemNo;
-        $_SESSION['quantity'] = $quantity;
-        $_SESSION['totalPrice'] = $totalPrice;
-        $_SESSION['delivery_date'] = $deliveyDate;
- 
+
+//   print_r($arrayNewNo);
+ if($batchID==1){
+  echo $batchID;
+    $_SESSION['batchID'] = $batchID;
+ }
+ if($deliveyDate==1){
+    echo $deliveyDate;
+    $_SESSION['deliveryDate'] = $deliveyDate;
+ }
+
+ if($flagItemNo==1){
+    echo "The item no:  ".$itemNo;
+    $_SESSION['itemNo'] = $itemNo;  
+}
+
+if($flagItemName==1){
+    echo "The itemName:  ".$itemName;
+    $_SESSION['itemName'] = $itemName;  
+}
         //Display variables
          $count = count($itemNo);
-         for($i = 0; $i < $count; $i++){
-            ?>
-            <tr>
-                <td><?php echo $itemNo[$i]; ?></td>
-                <td><?php echo$itemName[$i];?></td>
-                <td><?php echo $quantity[$i];?></td>
-                <td><?php echo$price[$i];?></td>
-        </tr>
-                <?php
-        }
-       
-
+      
+        ?>
+     
+<?php
         
 
 } else{
-  
+  echo "PDF";
     // File upload path 
-    $fileName = basename($_FILES["file"]["name"]); 
+    $fileName = basename($arrayFile); 
     $fileType = pathinfo($fileName, PATHINFO_EXTENSION); 
      
     // Allow certain file formats 
@@ -111,7 +193,7 @@ if($_FILES['file']['name']){
         $parser = new \Smalot\PdfParser\Parser(); 
          
         // Source PDF file to extract text 
-        $file = $_FILES["file"]["tmp_name"]; 
+        $file = $arrayFile; 
          
         // Parse pdf file using Parser library 
         $pdf = $parser->parseFile($file); 
@@ -165,8 +247,10 @@ $_SESSION['quantity'] = $quantity;
 $_SESSION['totalPrice'] = $totalPrice;
 $_SESSION['delivery_date'] = $deliveyDate;
 $count=Count($items);
+
 for($i = 0; $i < $count; $i++){
     ?>
+
     <tr>
         <td><?php echo $itemNo[$i]; ?></td>
         <td><?php echo$itemName[$i];?></td>
@@ -175,8 +259,14 @@ for($i = 0; $i < $count; $i++){
 </tr>
         <?php
 }
+?>
+<tr>
+<td><?php echo $totalPrice;?>
 
+</td>
 
+</tr>
+<?php
 }
 }
 
@@ -184,21 +274,15 @@ function splitNewLine($text) {
     $code=preg_replace('/\n$/','',preg_replace('/^\n/','',preg_replace('/[\r\n]+/',"\n",$text)));
     return explode("\n",$code);
 }
+
+
 ?>
 <tbody>
     </table>
     </div>
 </body>
 </html>
-<?php
-if($arrFileName[1] == 'xlsx'){
-    echo 'Total Price: RM '.$totalPrice;
-}else{
-    echo $totalPrice;
-}
 
-
-// echo $totalPrice;?>
 <br>
 <form action="uploadData.php" method="post" enctype="multipart/form-data">
  <div class="col-md-9">

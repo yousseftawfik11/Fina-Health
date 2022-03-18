@@ -38,7 +38,6 @@ $row = mysqli_fetch_array($result);
                 <br><br><br>
                 <li><a href="iCHome.php"><i class="fa fa-pie-chart"> Dashboard</i></a></li>
                 <li class="active"><a href="iCItemUpdate.php"><i class="fa fa-book"> Items</i></a></li>
-                <li><a href="#"><i class="fa fa-envelope"> Stock Report</i></a></li>
             </ul>
         </div>
         <div class="container">
@@ -86,7 +85,7 @@ $row = mysqli_fetch_array($result);
                                         </tr>
                                         <tr>
                                             <th scope="row"></th>
-                                            <td><input type="submit" name="submit" value="Submit" class="button"></td>
+                                            <td><input type="submit" name="submit" value="Submit" class="button submit_btn"></td>
                                         </tr>
                                     </tbody>
                                 </table>

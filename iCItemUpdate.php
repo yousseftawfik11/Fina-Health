@@ -42,7 +42,6 @@ include("db.php");
                 <br><br><br>
                 <li><a href="iCHome.php"><i class="fa fa-pie-chart"> Dashboard</i></a></li>
                 <li class="active"><a href="iCItemUpdate.php"><i class="fa fa-book"> Items</i></a></li>
-                <li><a href="#"><i class="fa fa-envelope"> Stock Report</i></a></li>
             </ul>
         </div>
         <div class="container">
@@ -83,21 +82,25 @@ include("db.php");
 
                                             <?php
                                             if ($exists['s_status'] == 1) { ?>
-                                                <td><i class="fa fa-check" style="color: greenyellow;"></i></td>
+                                                <td><img src="images/check.svg"></td>
                                             <?php
                                             } else if ($exists['s_status'] == 2) {
                                             ?>
                                                 <td><i class="fa fa-truck" style="color: orange;"></i></td>
                                             <?php
                                             } else { ?>
-                                                <td><i class="fa fa-times" style="color: red;"></i></td>
+                                                <td><img src="images/false.svg"></td>
                                             <?php
                                             }
                                             ?>
                                             <td><?php echo $exists['userID']; ?></td>
                                             <td>
-                                                <a href="iCUpdate.php?itemID=<?php echo $exists["itemID"]; ?>">Update</a> <br>
-                                                <a href="iCDelete.php?itemID=<?php echo $exists["itemID"]; ?>">Delete</a>
+                                                <a href="iCUpdate.php?itemID=<?php echo $exists["itemID"]; ?>">
+                                                    <i class="fa fa-pencil" style="color: green;"></i>
+                                                </a> <br>
+                                                <a href="iCDelete.php?itemID=<?php echo $exists["itemID"]; ?>">
+                                                    <i class="fa fa-trash" style="color: red;"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -154,7 +157,7 @@ include("db.php");
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="submit" name="addToDB">Add to Database</button>
+                                                <button type="submit" name="addToDB" class="submit_btn">Add to Database</button>
                                             </td>
                                         </tr>
                                     </tbody>

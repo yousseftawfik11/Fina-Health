@@ -67,6 +67,73 @@ $sql = "CREATE TABLE IF NOT EXISTS inventoryItem (
     echo "Error creating table: " . $conn->error;
   }
 
+  $query = mysqli_query($conn, "SELECT * FROM inventoryitem");
+      
+      $row = mysqli_fetch_array($query);
+     if($row == 0){
+     
+      //Insert data in the form table
+     
+           $insert = mysqli_query($conn, "INSERT INTO inventoryitem (item_name, price, quantity, s_status, userID)
+       VALUES 
+        ( 
+        'Gloove',
+         6,
+         4,
+         1,
+         100
+         ),
+         ( 
+         'Bandage',
+         9,
+         4,
+         1,
+         100
+         ),
+         (
+         'Plaster',
+         12,
+         8,
+         1,
+         100
+         ),
+         (
+         'Ice_packs',
+         15,
+         10,
+         1,
+         100
+         ),
+         (
+         'Cottons',
+         18,
+         12,
+         1,
+         100
+         ),
+         (
+         'Surgical_mask',
+         21,
+         14,
+         1,
+         100
+         ),
+         (
+         'Surgical_gown',
+         27,
+         5,
+         1,
+         100
+         )
+         ");
+     
+      if($insert){
+     
+      } else {
+        echo 'Failed to add records due to '.mysqli_error($conn);
+      }
+     }
+
 
 // Create the batch table 
 $sql = "CREATE TABLE IF NOT EXISTS batch (
@@ -103,25 +170,7 @@ $sql = "CREATE TABLE IF NOT EXISTS report (
   }
   
 
-  function uploadData($conn,$batchID,$itemNo, $quantity,$delivery_Date,$total_price)
-  {
-      $query = "SELECT * FROM batch WHERE batchID = '$batchID'";
-      $result = $conn->query($query);
-      if($result->num_rows == 0){
 
-        $itemList=implode(",",$itemNo);
-        $quantityList=implode(",",$quantity);
-        $tp = floatval($total_price);
-    
-        
-        $mainQuery = "INSERT INTO batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$delivery_Date',total_price='$tp'";
-        $result1 = $conn->query($mainQuery) or die("Error in main Query".$conn->error);
-        return $result1;
-
-      }else{
-   return false;
-  }
-
-  }
+  
  
 ?>

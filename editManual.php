@@ -37,6 +37,13 @@ function showEditTable($batchID, $deliveyDate, $itemNo, $itemName, $quantity, $p
 
     ?>
     <body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <a href="logout.php"><i class="fa fa-sign-out"> Logout</i></a>
+            </div>
+        </div>
+    </div>
     <div class="navWrapper" style="background-color: #EFFFFD;">
         <div class="container" style="margin-left: 20px;">
             <div class="row">

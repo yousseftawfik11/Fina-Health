@@ -28,7 +28,7 @@ if(mysqli_num_rows($Check) > 0  && password_verify($password,$row['password_hash
     }elseif($row['userRole']==2){
         echo '
         <script>
-        window.location.href="showTable.php";
+        window.location.href="fetchEmail.php";
         </script>
       ';
     }elseif($row['userRole']==3){
@@ -155,7 +155,7 @@ if(isset($_POST["submit2"])){
 							</div> -->
 						</div>
 						<div class="group">
-							<input type="submit" name="submit2" class="button" value="Sign Up">
+							<input type="submit" name="submit2" class="submit_btn" value="Sign Up">
 						</div>
 
 </form>

@@ -172,11 +172,11 @@ else
 
      $sql = "UPDATE inventoryitem SET quantity='$q' WHERE itemID='$itemNo[$i]'";
      $result1 = $conn->query($sql) or die("Error in main Query".$conn->error);
-    if($result1){
-      echo "Inventory Records were updated successfully.";
-    } else {
-    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-    }
+    // if($result1){
+    //   echo "Inventory Records were updated successfully.";
+    // } else {
+    // echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+    // }
 
     }
    }else{
@@ -327,11 +327,11 @@ else{
        
             $sql = "UPDATE inventoryitem SET quantity='$q' WHERE itemID='$itemNo[$i]'";
             $result1 = $conn->query($sql) or die("Error in main Query".$conn->error);
-           if($result1){
-             echo "Inventory Records were updated successfully.";
-           } else {
-           echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-           }
+        //    if($result1){
+        //      echo "Inventory Records were updated successfully.";
+        //    } else {
+        //    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+        //    }
        
            }
 

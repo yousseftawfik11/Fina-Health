@@ -154,17 +154,36 @@ else
 
      $itemList=implode(",",$itemNo);
      $quantityList=implode(",",$quantity);
-     $tp = floatval($total_price);
+     $tp = floatval($totalPrice);
  
      
-     $mainQuery = "INSERT INTO batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$delivery_Date',total_price='$tp'";
+     $mainQuery = "INSERT INTO batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$deliveyDate',total_price='$tp'";
      $result1 = $conn->query($mainQuery) or die("Error in main Query".$conn->error);
-     return $result1;
+     echo "File Uploaded Successfully". $arrayFile.  "<br>";
 
+     for($i = 0; $i < count($itemNo); $i++){
+
+     $query = "SELECT quantity FROM inventoryitem WHERE itemID = '$itemNo[$i]'";
+     $result1 = $conn->query($query) or die("Error in main Query".$conn->error);
+     $row = mysqli_fetch_array($result1);
+
+     $q =  $row['quantity'] + $quantity[$i];
+
+
+     $sql = "UPDATE inventoryitem SET quantity='$q' WHERE itemID='$itemNo[$i]'";
+     $result1 = $conn->query($sql) or die("Error in main Query".$conn->error);
+    if($result1){
+      echo "Inventory Records were updated successfully.";
+    } else {
+    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+    }
+
+    }
    }else{
-return false;
+     echo "Duplicate Batch ID<br>";
+   }
 }
-}
+    
 
 }
         
@@ -202,7 +221,7 @@ else{
     $dDate = explode(":", $array[1]);
 
     $batchID = $bID[1];
-    $delivey_date = $dDate[1];
+    $deliveyDate = $dDate[1];
 
     $length = count($array)-1;
     $tp =  explode(":", $array[$length]);
@@ -293,12 +312,31 @@ else{
         $tp = floatval($totalPrice);
     
         
-        $mainQuery = "INSERT INTO batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$delivey_date',total_price='$tp'";
+        $mainQuery = "INSERT INTO batch SET batchID='$batchID',itemList='$itemList',quantityList='$quantityList',delivery_Date='$deliveyDate',total_price='$tp'";
         $result1 = $conn->query($mainQuery) or die("Error in main Query".$conn->error);
-        return $result1;
+        echo "File Uploaded Successfully". $arrayFile.  "<br>";
+
+        for($i = 0; $i < count($itemNo); $i++){
+
+            $query = "SELECT quantity FROM inventoryitem WHERE itemID = '$itemNo[$i]'";
+            $result1 = $conn->query($query) or die("Error in main Query".$conn->error);
+            $row = mysqli_fetch_array($result1);
+       
+            $q =  $row['quantity'] + $quantity[$i];
+
+       
+            $sql = "UPDATE inventoryitem SET quantity='$q' WHERE itemID='$itemNo[$i]'";
+            $result1 = $conn->query($sql) or die("Error in main Query".$conn->error);
+           if($result1){
+             echo "Inventory Records were updated successfully.";
+           } else {
+           echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+           }
+       
+           }
 
       }else{
-   return false;
+        echo "Duplicate Batch ID<br>";
   }
 
 

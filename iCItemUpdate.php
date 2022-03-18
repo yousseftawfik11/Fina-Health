@@ -42,6 +42,8 @@ include("db.php");
                 <br><br><br>
                 <li><a href="iCHome.php"><i class="fa fa-pie-chart"> Dashboard</i></a></li>
                 <li class="active"><a href="iCItemUpdate.php"><i class="fa fa-book"> Items</i></a></li>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <li><a href="logout.php"><i class="fa fa-sign-out"> Logout</i></a></li>
             </ul>
         </div>
         <div class="container">

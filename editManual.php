@@ -28,6 +28,13 @@ tr:nth-child(even) {
 }
 </style>
 <body>
+<div class="container">
+        <div class="row">
+            <div class="col">
+                <a href="logout.php"><i class="fa fa-sign-out"> Logout</i></a>
+            </div>
+        </div>
+    </div>
 <h3 align="center">Item Table</h3>
    <br />
 

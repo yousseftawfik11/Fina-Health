@@ -22,13 +22,13 @@ if(mysqli_num_rows($Check) > 0  && password_verify($password,$row['password_hash
     if($row['userRole']==1){
         echo '
         <script>
-        window.location.href="businessHome.php";
+        window.location.href="bPartner.php";
         </script>
       ';
     }elseif($row['userRole']==2){
         echo '
         <script>
-        window.location.href="uploadForm.php";
+        window.location.href="showTable.php";
         </script>
       ';
     }elseif($row['userRole']==3){
@@ -124,7 +124,7 @@ if(isset($_POST["submit2"])){
 						</div>
 
                         <div class="group">
-							<input type="submit" name="submit" class="button" value="Sign In">
+							<input type="submit" name="submit" class="submit_btn" value="Sign In">
 						</div>
 </form>
 

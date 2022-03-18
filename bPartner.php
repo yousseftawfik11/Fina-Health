@@ -40,7 +40,8 @@ body {
     <form method="post" action="<?php echo $_SERVER['PHP_SELF']?>"  enctype="multipart/form-data">
   <input type="file" name="uploaded_file" id="uploaded_file" />
   
-  <input type="submit" name="sendReports" value="Send Document" class="submit_btn"/>
+  <input type="submit" name="sendReports" value="Send Document" class="submit_btn">
+  <
 </form>
 
     				

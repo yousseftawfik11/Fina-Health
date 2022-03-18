@@ -21,7 +21,10 @@
 
 </html>
 <?php
-session_destroy();
+if (isset($_SESSION)){
+    session_destroy();
+}
+
 echo '
     <script>
         Swal.fire(

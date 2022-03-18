@@ -5,14 +5,14 @@
 .navWrapper {
     margin: auto;
     display: flex;
-    background-color: #EFFFFD;
+    background-color: #e7e7e7;
 }
 
 .sideNav {
     width: 200px;
     height: 100vh;
-    background: #42C2FF;
-    border-radius: 0px 25px 25px 0px;
+    background: #11334D;
+    border-radius: 0px 0px 0px 0px;
     box-shadow: 10px 0 5px -2px #888;
 }
 
@@ -28,9 +28,33 @@
 .sideNav ul li i {
     margin: 20px;
     font-size: 22px;
-    color: black;
+    color: white;
 }
 
 .sideNav li:hover, li.active {
-    border-right: 3px solid black;
+    border-right: 3px solid white;
+}
+
+/*Submit buttons*/
+.submit_btn{
+    border-radius: 13px;
+    padding: 5px;
+    background-color: #478daf;
+    color: white;
+    border: none;
+    transition: all ease-in 0.3s;
+}
+.submit_btn:hover{
+    padding-left: 9px;
+    padding-right: 9px;
+}
+
+/*Cards*/
+.card-header {
+    background-color: #478daf !important;
+}
+
+.navbar-brand {
+    color: white;
+    text-decoration: none;
 }

@@ -22,6 +22,8 @@
   .submit_btn{
     border-radius: 13px;
     padding: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
     background-color: #478daf;
     color: white;
     border: none;

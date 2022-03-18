@@ -84,18 +84,18 @@ include("db.php");
                 <a class="navbar-brand" href="iCHome.php">FINA Health Care</a>
                 <br><br><br>
                 <li class="active"><a href="iCHome.php"><i class="fa fa-pie-chart"> Dashboard</i></a></li>
-                <li><a href="iCItemUpdate.php"><i class="fa fa-book"> Items</i></a></li>
-                <li><a href="#"><i class="fa fa-envelope"> Stock Report</i></a></li>
+                <li><a href="iCItemUpdate.php"><i class="fa fa-book"> Items</i></a></li>                
             </ul>
         </div>
         <div class="container">
             <div class="row">
-                <div class="col">
+                <div class="col-9"></div>
+                <div class="col-3">
                     <br>
                     <div class="card">
                         <div class="card-body">
-                            <h1>Welcome Mr Osama</h1>
-                            <h6>The latest updates are as follows</h6>
+                            <h4>Welcome Mr Osama</h4>
+                            
                         </div>
                     </div>
                 </div>

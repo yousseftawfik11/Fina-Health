@@ -5,6 +5,8 @@
 <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
 <!-- dataTables -->
 <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+<!--Font Awesome 4 CDN-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 body {
 	padding: 20px 10px 20px 10px
@@ -12,6 +14,11 @@ body {
 </style>
 
 <div class="container">
+	<div class="row">
+		<div class="col">
+            <li><a href="logout.php"><i class="fa fa-sign-out"> Logout</i></a></li>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-12"> 
 			<hr>
